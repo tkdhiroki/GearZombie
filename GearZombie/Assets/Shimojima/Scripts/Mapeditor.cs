@@ -1,23 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.UI;
+using System.IO;
 
 public class Mapeditor : MonoBehaviour
 {
+    public InputField name;
+    public Button save;
+    public Text text;
     public Dropdown inputSize;
     public Sprite[] mapObj;
     public Image preview;
     private GameObject root;
     public float moveValue;
     private int defaultSize = 7;
-    public int objSize;
     private int number;
+    public bool isEdit = true;
     
     public Vector2 stageSize;
 
     void Start()
     {
+        name.interactable = false;
+        save.interactable = false;
         root = new GameObject();
         root.name = "Root";
     }
@@ -26,6 +33,9 @@ public class Mapeditor : MonoBehaviour
     void Update()
     {
         ImagePreview(number);
+
+        if (!isEdit) return;
+
         MapObjChange();
 
         MovePos();
@@ -39,6 +49,8 @@ public class Mapeditor : MonoBehaviour
         {
             MapObjDestroy();
         }
+
+
     }
 
     private void MovePos()
@@ -138,8 +150,38 @@ public class Mapeditor : MonoBehaviour
         }
     }
 
+    public void EditModeChange()
+    {
+        if (isEdit)
+        {
+            text.text = "SaveMode";
+            name.interactable = true;
+            save.interactable = true;
+            isEdit = false;
+        }
+        else
+        {
+            text.text = "EditMode";
+            name.interactable = false;
+            save.interactable = false;
+            isEdit = true;
+        }
+    }
+
     private void ImagePreview(int x)
     {
         preview.sprite = mapObj[x];
+    }
+
+    public void SetName()
+    {
+        root.name = name.text;
+    }
+    public void CreatePrefab()
+    {
+        string path = "Assets/Shimojima/Prefabs/" + root.name + ".prefab";
+        PrefabUtility.SaveAsPrefabAsset(root, path);
+
+        
     }
 }
