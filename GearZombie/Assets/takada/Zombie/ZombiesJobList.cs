@@ -20,6 +20,7 @@ public class ZombiesJobList : ScriptableObject
     [SerializeField] ZombieJob job;
     public ZombieJob Job { get { return job; } }
     [SerializeField] Sprite sprite;
+    public Sprite Sprite { get { return sprite; } }
     [SerializeField] int hp, attack, deffence, speed;
     public int Hp { get { return hp; } set { hp = value; } }
     public int Attack { get { return attack; } }
@@ -27,9 +28,8 @@ public class ZombiesJobList : ScriptableObject
     public int Speed { get { return speed; } }
     [SerializeField] float attackSpeed;
     public float AttackSpeed { get { return attackSpeed; } }
-
-    private Condition condition;
-    public Condition Condition{ get { return condition; } set { condition = value; } }
+    [SerializeField] ZombieState state;
+    public ZombieState State { get { return state; } set { state = value; } }
 }
 
 //[System.Serializable]
