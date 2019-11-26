@@ -203,6 +203,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 291441590}
+  - component: {fileID: 291441591}
   m_Layer: 0
   m_Name: Scenemanager
   m_TagString: Untagged
@@ -224,6 +225,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &291441591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291441589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff74fa4f47a8447a899404a2ecac4652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeTime: 2
+  fadeColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1513018236
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,6 +317,7 @@ GameObject:
   - component: {fileID: 1731165903}
   - component: {fileID: 1731165902}
   - component: {fileID: 1731165901}
+  - component: {fileID: 1731165905}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -389,6 +405,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1731165905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731165900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0d1e6a57ffc7402a848255e9d944c98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  error: {fileID: 0}
 --- !u!1 &1866293896
 GameObject:
   m_ObjectHideFlags: 0
