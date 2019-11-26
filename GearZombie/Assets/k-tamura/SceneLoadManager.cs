@@ -84,6 +84,7 @@ public class SceneLoadManager : MonoBehaviour
             )
         );
     }
+    /*
     public static void LoadScene(int sceneName)
     {
         nextScene = sceneName;
@@ -94,6 +95,7 @@ public class SceneLoadManager : MonoBehaviour
             )
         );
     }
+    */
     public static void FadeOut(float time, System.Action callback = null)
     {
         if (Instance.fadeIn != null) Instance.StopCoroutine(Instance.fadeIn);
