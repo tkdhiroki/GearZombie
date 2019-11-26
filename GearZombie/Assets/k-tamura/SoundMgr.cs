@@ -12,6 +12,7 @@ public class SoundMgr :SingletonMonoBehaviour<SoundMgr>
     {
         instance.audioSource[0].clip = instance.audioClip[i];
         instance.audioSource[0].loop = true;
+        instance.audioSource[0].volume=0.7f;
         instance.audioSource[0].Play();
 
     }

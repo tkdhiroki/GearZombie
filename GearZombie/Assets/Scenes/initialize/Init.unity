@@ -912,7 +912,13 @@ MonoBehaviour:
   - {fileID: 1221168284}
   - {fileID: 349621789}
   - {fileID: 149387854}
-  audioClip: []
+  audioClip:
+  - {fileID: 8300000, guid: 9f5cf1b7d461f9e48b09f4ab56781334, type: 3}
+  - {fileID: 8300000, guid: bedaaff49818c7441b234adbf7b1ef67, type: 3}
+  - {fileID: 8300000, guid: 6a98f8fbd69156d4993b6129d37b4513, type: 3}
+  - {fileID: 8300000, guid: e8486b4537f165f498707b62e9e61f68, type: 3}
+  - {fileID: 8300000, guid: 53befd1526bb53549afbdeda48b06c33, type: 3}
+  - {fileID: 8300000, guid: 14ea22b17629cc448a73981b330b5a03, type: 3}
 --- !u!4 &1066528585
 Transform:
   m_ObjectHideFlags: 0
