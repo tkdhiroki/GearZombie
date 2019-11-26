@@ -1,0 +1,66 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+{
+    private CanvasGroup canvasGroup = null;
+
+    private Vector3 startPos;
+
+    public Sprite GearSprite { private set; get; } = null;
+    public Color GearColor { private set; get; }
+
+    private Image image = null;
+
+    private void Awake()
+    {
+        if(canvasGroup == null) { canvasGroup = GetComponent<CanvasGroup>(); }
+        if(image == null) { image = GetComponent<Image>(); }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    /// <summary>
+    /// ドラッグを開始したとき実行する処理
+    /// </summary>
+    /// <param name="eventData"></param>
+    void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
+    {
+        canvasGroup.blocksRaycasts = false;
+        startPos = transform.position;
+        GearSprite = image.sprite;
+        GearColor = image.color;
+    }
+
+    /// <summary>
+    /// ドラッグ中に実行する処理
+    /// </summary>
+    /// <param name="eventData"></param>
+    void IDragHandler.OnDrag(PointerEventData eventData)
+    {
+        transform.position = eventData.position;
+    }
+
+    /// <summary>
+    /// ドラッグを終了したときに実行する処理
+    /// </summary>
+    /// <param name="eventData"></param>
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
+    {
+        transform.position = startPos;
+        canvasGroup.blocksRaycasts = true;
+    }
+}

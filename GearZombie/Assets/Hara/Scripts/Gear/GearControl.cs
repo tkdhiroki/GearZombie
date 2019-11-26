@@ -5,27 +5,60 @@ using UnityEngine.EventSystems;
 
 public class GearControl : MonoBehaviour
 {
-    [SerializeField]
     private GearView gearObject = null;
 
     private EventTrigger trigger = null;
     private bool gearFlag = false;
 
-    public void SetGearFlag(bool b)
-    {
-        gearFlag = b ? true : false;
-    }
-
     private void Awake()
     {
-        if(gearObject != null)
-        {
-            trigger = gearObject.GetComponent<EventTrigger>();
-        }
+        if(gearObject == null) { gearObject = GetComponent<GearView>(); }
+        if(trigger == null) { trigger = GetComponent<EventTrigger>(); }
     }
 
     // Start is called before the first frame update
     void Start()
+    {
+        SetEventTrigger();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        MouseClick();
+    }
+
+    /// <summary>
+    /// マウスのクリック検知
+    /// </summary>
+    private void MouseClick()
+    {
+        if(!gearFlag) return;
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            gearObject.RotateGearDirection = true;
+            gearObject.GearRotateFlag = true;
+        }
+        if(Input.GetMouseButtonUp(0))
+        {
+            if(gearObject.GearRotateFlag == true) { gearObject.GearRotateFlag = false; }
+        }
+        if(Input.GetMouseButtonDown(1))
+        {
+            gearObject.RotateGearDirection = false;
+            gearObject.GearRotateFlag = true;
+        }
+        if(Input.GetMouseButtonUp(1))
+        {
+            if(gearObject.GearRotateFlag == true) { gearObject.GearRotateFlag = false; }
+        }
+    }
+
+    /// <summary>
+    /// イベントトリガーにイベントの設定
+    /// </summary>
+    private void SetEventTrigger()
     {
         if(trigger != null)
         {
@@ -36,34 +69,8 @@ public class GearControl : MonoBehaviour
 
             EventTrigger.Entry pointerExit = new EventTrigger.Entry();
             pointerExit.eventID = EventTriggerType.PointerExit;
-            pointerExit.callback.AddListener((x) => { gearFlag = false; if(gearObject.GearRotateFlag) gearObject.GearRotateFlag = false; });
+            pointerExit.callback.AddListener((x) => { gearFlag = false; if(gearObject.GearRotateFlag == true) { gearObject.GearRotateFlag = false; } });
             trigger.triggers.Add(pointerExit);
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        MouseClick();
-    }
-
-    private void MouseClick()
-    {
-        if(!gearFlag) return;
-
-        if(Input.GetMouseButton(0))
-        {
-            gearObject.RotateGearDirection = true;
-            gearObject.GearRotateFlag = true;
-        }
-        else if(Input.GetMouseButton(1))
-        {
-            gearObject.RotateGearDirection = false;
-            gearObject.GearRotateFlag = true;
-        }
-        else
-        {
-            gearObject.GearRotateFlag = false;
         }
     }
 }

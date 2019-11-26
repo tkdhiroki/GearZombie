@@ -2,25 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class GearView : MonoBehaviour
+public class GearView : MonoBehaviour, IDropHandler
 {
     public bool GearRotateFlag { set; get; } = false;
     public bool RotateGearDirection { set; private get; } = false;
 
-    private GameObject gearObj1 = null;
-    private GameObject gearObj2 = null;
-    private GameObject gearObj3 = null;
-    private GameObject gearObj4 = null;
-    private GameObject gearObj5 = null;
+    private Image[] gearObjects = null;
 
     [SerializeField, Tooltip("歯車が1秒間で回転する角度")]
     private float angle = 180;
 
+    private int gearCount = 0;
+
+    private void Awake()
+    {
+        SetGearObject();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        SetGearObject();
+        
     }
 
     // Update is called once per frame
@@ -34,10 +38,10 @@ public class GearView : MonoBehaviour
     /// </summary>
     private void RotateGear(bool direction)
     {
-        if(!GearRotateFlag) return;
+        if(GearRotateFlag == false || gearCount <= 0) { return; }
 
         var direct = 0;
-        if(RotateGearDirection)
+        if(RotateGearDirection == true)
         {
             direct = -1;
         }
@@ -46,25 +50,17 @@ public class GearView : MonoBehaviour
             direct = 1;
         }
 
-        if(gearObj1 != null)
+        for(int i = 0; i < gearObjects.Length; i++)
         {
-            gearObj1.transform.RotateAround(gearObj1.transform.position, Vector3.forward, direct * (angle * Time.deltaTime));
-        }
-        if(gearObj2 != null)
-        {
-            gearObj2.transform.RotateAround(gearObj2.transform.position, Vector3.forward, -direct * (angle * Time.deltaTime));
-        }
-        if(gearObj3 != null)
-        {
-            gearObj3.transform.RotateAround(gearObj3.transform.position, Vector3.forward, direct * (angle * Time.deltaTime));
-        }
-        if(gearObj4 != null)
-        {
-            gearObj4.transform.RotateAround(gearObj4.transform.position, Vector3.forward, -direct * (angle * Time.deltaTime));
-        }
-        if(gearObj5 != null)
-        {
-            gearObj5.transform.RotateAround(gearObj5.transform.position, Vector3.forward, direct * (angle * Time.deltaTime));
+            int num = i + 1;
+            if(num % 2 == 0)
+            {
+                gearObjects[i].transform.RotateAround(gearObjects[i].transform.position, Vector3.forward, -direct * (angle * Time.deltaTime));
+            }
+            else
+            {
+                gearObjects[i].transform.RotateAround(gearObjects[i].transform.position, Vector3.forward, direct * (angle * Time.deltaTime));
+            }
         }
     }
 
@@ -73,10 +69,32 @@ public class GearView : MonoBehaviour
     /// </summary>
     private void SetGearObject()
     {
-        gearObj1 = transform.GetChild(0).gameObject;
-        gearObj2 = transform.GetChild(1).gameObject;
-        gearObj3 = transform.GetChild(2).gameObject;
-        gearObj4 = transform.GetChild(3).gameObject;
-        gearObj5 = transform.GetChild(4).gameObject;
+        gearObjects = new Image[transform.childCount];
+        for(int i = 0; i < gearObjects.Length; i++)
+        {
+            gearObjects[i] = transform.GetChild(i).GetComponent<Image>();
+            gearObjects[i].gameObject.SetActive(false);
+        }
+        gearObjects[0].gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// ドラッグされたオブジェクトがこのオブジェクトにドロップされた時の処理
+    /// </summary>
+    /// <param name="eventData"></param>
+    void IDropHandler.OnDrop(PointerEventData eventData)
+    {
+        GearItemView item = eventData.pointerDrag.GetComponent<GearItemView>();
+        if(item != null)
+        {
+            if(gearCount < gearObjects.Length - 1)
+            {
+                item.gameObject.SetActive(false);
+                gearCount++;
+                gearObjects[gearCount].sprite = item.GearSprite;
+                gearObjects[gearCount].color = item.GearColor;
+                gearObjects[gearCount].gameObject.SetActive(true);
+            }
+        }
     }
 }
