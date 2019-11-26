@@ -25,7 +25,13 @@ public class ZombieScript : MonoBehaviour
         parent = this.transform.parent.gameObject;
     }
 
-
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            this.Init();
+        }
+    }
 
     /// <summary>
     /// ダメージ処理
@@ -40,13 +46,21 @@ public class ZombieScript : MonoBehaviour
 
     private void ZombieMove()
     {
-
-
+        
     }
 
-    private void Init()
+    private int InitRandomHeight()
     {
+        int minmax = 4;
 
+        return UnityEngine.Random.Range(-minmax, minmax);
+    }
+
+    public void Init()
+    {
+        int y = InitRandomHeight();
+        parent.transform.position = initPos.position + new Vector3(0, y);
+        ZombieMove();
     }
 
     private void DeathZombie()

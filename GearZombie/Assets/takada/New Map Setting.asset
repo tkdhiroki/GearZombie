@@ -9,14 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f3f33a8468b20341a5e0bb2ffdb2226, type: 3}
-  m_Name: Pumpkin
+  m_Script: {fileID: 11500000, guid: 0f08b814364b21949abcb9941bb01833, type: 3}
+  m_Name: New Map Setting
   m_EditorClassIdentifier: 
-  job: 4
-  sprite: {fileID: 21300004, guid: e6fc5dbf00ec28042bb42d353d13e000, type: 3}
-  hp: 0
-  attack: 0
-  deffence: 0
-  speed: 0
-  attackSpeed: 0
-  state: 0
+  wave: []
