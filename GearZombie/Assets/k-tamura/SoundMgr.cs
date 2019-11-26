@@ -15,7 +15,10 @@ public class SoundMgr :SingletonMonoBehaviour<SoundMgr>
         instance.audioSource[0].Play();
 
     }
-
+    private void Start()
+    {
+        DontDestroyOnLoad(this);
+    }
     public static void SeShot(int soundNum)
     {
         for(var i=1;i<=instance.audioSource.Length;i++)
