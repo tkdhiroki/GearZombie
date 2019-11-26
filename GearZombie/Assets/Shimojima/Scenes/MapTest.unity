@@ -1407,8 +1407,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: d8d936bfe0b5c3145a5899b310f9ec6f, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2112,17 +2112,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682bd0af0dc6fd543b08f56be1d712ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 1869030980}
+  stageName: {fileID: 1869030980}
   save: {fileID: 1607406289}
   text: {fileID: 1766747521}
   inputSize: {fileID: 2095281293}
   mapObj:
-  - {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 21300000, guid: d8d936bfe0b5c3145a5899b310f9ec6f, type: 3}
+  spriteColor: {r: 0, g: 0, b: 0, a: 1}
+  savedColor: []
   preview: {fileID: 1711671968}
-  moveValue: 1
+  moveValue: 1.12
   isEdit: 1
-  stageSize: {x: 0, y: 0}
 --- !u!212 &2042513817
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2160,7 +2160,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0, g: 0.9362912, b: 1, a: 0.49019608}
   m_FlipX: 0
   m_FlipY: 0
