@@ -311,6 +311,7 @@ MonoBehaviour:
   zombie: {fileID: 11400000, guid: 440388e13c090ec43b2428dfc10fbaa9, type: 2}
   HpBar: {fileID: 35928518}
   initPos: {fileID: 0}
+  targetObject: {fileID: 0}
 --- !u!1 &285087146
 GameObject:
   m_ObjectHideFlags: 0
