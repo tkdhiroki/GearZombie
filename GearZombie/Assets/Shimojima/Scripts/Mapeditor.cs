@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine.UI;
 using System.IO;
 
@@ -35,15 +37,18 @@ public class Mapeditor : MonoBehaviour
 
     void Start()
     {
+#if UNITY_EDITOR
         root = new GameObject();
         stageName.interactable = false;
         save.interactable = false;
         root.name = "Root";
+#endif
     }
 
     // Update is called once per frame
     void Update()
     {
+#if UNITY_EDITOR
         ImagePreview(number);
 
         if (!isEdit) return;
@@ -65,6 +70,7 @@ public class Mapeditor : MonoBehaviour
         {
             SpriteColorSave();
         }
+#endif
     }
 
     /// <summary>
@@ -179,11 +185,13 @@ public class Mapeditor : MonoBehaviour
         }
     }
 
+
     /// <summary>
     /// エディットモードの切り替え
     /// </summary>
     public void EditModeChange()
     {
+#if UNITY_EDITOR
         if (isEdit)
         {
             text.text = "SaveMode";
@@ -198,6 +206,7 @@ public class Mapeditor : MonoBehaviour
             save.interactable = false;
             isEdit = true;
         }
+#endif
     }
 
     /// <summary>
@@ -210,12 +219,15 @@ public class Mapeditor : MonoBehaviour
         preview.sprite = mapObj[0];
     }
 
+
     /// <summary>
     /// スプライトのカラーの保存
     /// </summary>
     private void SpriteColorSave()
     {
+#if UNITY_EDITOR
         savedColor.Add(spriteColor);
+#endif
     }
 
     /// <summary>
@@ -223,7 +235,9 @@ public class Mapeditor : MonoBehaviour
     /// </summary>
     public void SetName()
     {
+#if UNITY_EDITOR
         root.name = stageName.text;
+#endif
     }
 
     /// <summary>
@@ -231,9 +245,9 @@ public class Mapeditor : MonoBehaviour
     /// </summary>
     public void CreatePrefab()
     {
+#if UNITY_EDITOR
         string path = "Assets/Shimojima/Prefabs/" + root.name + ".prefab";
         PrefabUtility.SaveAsPrefabAsset(root, path);
-
-        
+#endif
     }
 }
