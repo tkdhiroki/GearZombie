@@ -1,24 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.UI;
+using System.IO;
 
 public class Mapeditor : MonoBehaviour
 {
+    [Header("-参照オブジェクト-")]
+    [Tooltip("保存するプレハブ名")]
+    public InputField stageName;
+    [Tooltip("saveボタンオブジェクト")]
+    public Button save;
+    public Text text;
+    [Tooltip("サイズメニューオブジェクト")]
     public Dropdown inputSize;
+    [Tooltip("mapに使用するスプライト")]
     public Sprite[] mapObj;
+    [Tooltip("スプライトカラー")]
+    public Color spriteColor = Color.white;
+    [Tooltip("保存されたスプライトカラー")]
+    public List<Color> savedColor = new List<Color>();
+    private Color changeColor = Color.white;
+    [Tooltip("プレビューオブジェクト")]
     public Image preview;
     private GameObject root;
     public float moveValue;
-    private int defaultSize = 7;
-    public int objSize;
+    private readonly float defaultSize = 4f;
     private int number;
+    [Tooltip("モード切替チェック")]
+    public bool isEdit = true;
     
-    public Vector2 stageSize;
+    //public Vector2 stageSize;
 
     void Start()
     {
         root = new GameObject();
+        stageName.interactable = false;
+        save.interactable = false;
         root.name = "Root";
     }
 
@@ -26,10 +45,12 @@ public class Mapeditor : MonoBehaviour
     void Update()
     {
         ImagePreview(number);
+
+        if (!isEdit) return;
+
         MapObjChange();
 
         MovePos();
-
         if (Input.GetKeyDown(KeyCode.Return))
         {
             MapObjSet(number);
@@ -39,8 +60,16 @@ public class Mapeditor : MonoBehaviour
         {
             MapObjDestroy();
         }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            SpriteColorSave();
+        }
     }
 
+    /// <summary>
+    /// マップエディットオブジェクトの操作
+    /// </summary>
     private void MovePos()
     {
 
@@ -69,34 +98,36 @@ public class Mapeditor : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// マップオブジェクトの設置
+    /// <para>引数xはマップオブジェクトの番号</para>
+    /// </summary>
+    /// <param name="x">マップオブジェクトナンバー</param>
     private void MapObjSet(int x)
     {
+        //既にマップオブジェクトが置かれているかの確認
         Collider2D[] col2d = new Collider2D[5];
-        bool b = false;
         gameObject.GetComponent<Collider2D>().OverlapCollider(new ContactFilter2D(), col2d);
         foreach (var c in col2d)
         {
             if(c != null && c.name == "map")
             {
-                b = true;
+                c.GetComponent<SpriteRenderer>().color= changeColor;
+                return;
             }
         }
-        
-        if (b)
-        {
-            Debug.Log("ここには置けません");
-            return;
-        }
 
+        //マップオブジェクトの設置
         int size = inputSize.value + 1;
         Vector3 pos = transform.position;
         GameObject obj = new GameObject();
         obj.name = "map";
-        obj.AddComponent<SpriteRenderer>().sprite = mapObj[x];
+        obj.AddComponent<SpriteRenderer>().sprite = mapObj[0];
         obj.transform.localScale = new Vector3(defaultSize * size, defaultSize * size, 1);
+        obj.GetComponent<SpriteRenderer>().color = changeColor;
         if (size != 1)
         {
-            obj.transform.localPosition = new Vector3(pos.x + 0.5f * (size - 1), pos.y + 0.5f * (size - 1), pos.z);
+            obj.transform.localPosition = new Vector3(pos.x + 0.56f * (size - 1), pos.y + 0.56f * (size - 1), pos.z);
         }
         else
         {
@@ -108,6 +139,9 @@ public class Mapeditor : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// マップオブジェクトの削除
+    /// </summary>
     private void MapObjDestroy()
     {
         Collider2D[] col2d = new Collider2D[5];
@@ -123,23 +157,83 @@ public class Mapeditor : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 設置するオブジェクトの変更
+    /// </summary>
     private void MapObjChange()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (mapObj.Length - 1 == number)
+            if (savedColor.Count - 1 == number)
             {
                 number = 0;
+                changeColor = savedColor[number];
+                preview.color = changeColor;
             }
             else
             {
                 number++;
+                changeColor = savedColor[number];
+                preview.color = changeColor;
             }
         }
     }
 
+    /// <summary>
+    /// エディットモードの切り替え
+    /// </summary>
+    public void EditModeChange()
+    {
+        if (isEdit)
+        {
+            text.text = "SaveMode";
+            stageName.interactable = true;
+            save.interactable = true;
+            isEdit = false;
+        }
+        else
+        {
+            text.text = "EditMode";
+            stageName.interactable = false;
+            save.interactable = false;
+            isEdit = true;
+        }
+    }
+
+    /// <summary>
+    /// イメージプレビュー
+    /// <para>引数xはマップオブジェクトの番号</para>
+    /// </summary>
+    /// <param name="x">マップオブジェクトナンバー</param>
     private void ImagePreview(int x)
     {
-        preview.sprite = mapObj[x];
+        preview.sprite = mapObj[0];
+    }
+
+    /// <summary>
+    /// スプライトのカラーの保存
+    /// </summary>
+    private void SpriteColorSave()
+    {
+        savedColor.Add(spriteColor);
+    }
+
+    /// <summary>
+    /// プレハブの名前を変更
+    /// </summary>
+    public void SetName()
+    {
+        root.name = stageName.text;
+    }
+
+    /// <summary>
+    /// プレハブを作成
+    /// </summary>
+    public void CreatePrefab()
+    {
+        string path = "Assets/Shimojima/Prefabs/" + root.name + ".prefab";
+        PrefabUtility.SaveAsPrefabAsset(root, path);
+
+        
     }
 }
