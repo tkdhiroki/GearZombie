@@ -15,7 +15,8 @@ public class TitleMgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.F1))
+            SceneLoadManager.LoadScene("test");
     }
     public void resetButton()
     {
