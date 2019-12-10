@@ -7,8 +7,7 @@ using UnityEngine;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 
-//マネージャー系は先に実行させるテスト
-//ダメだったら個別に付けよう
+
 [DefaultExecutionOrder(-1)]
 public class SingletonMonoBehaviour<T> : 
     MonoBehaviour where T: MonoBehaviour
