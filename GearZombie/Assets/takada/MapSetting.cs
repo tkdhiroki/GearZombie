@@ -13,9 +13,9 @@ public class MapSetting : ScriptableObject
 }
 
 [System.Serializable]
-public class WaveZoombieClass
+public struct WaveZoombieClass
 {
-    public List<ZombieSpawnClass> spawnClasses = new List<ZombieSpawnClass>();
+    public List<ZombieSpawnClass> spawnClasses;
 }
 
 [System.Serializable]

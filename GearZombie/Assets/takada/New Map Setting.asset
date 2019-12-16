@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f08b814364b21949abcb9941bb01833, type: 3}
   m_Name: New Map Setting
   m_EditorClassIdentifier: 
-  wave: []
+  wave:
+  - spawnClasses:
+    - zombieJob: {fileID: 0}
+      spawnNum: 0
+      spawnSpeed: 0
