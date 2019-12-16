@@ -5,10 +5,15 @@ using UnityEngine;
 public class ZombieCreate : MonoBehaviour
 {
     [SerializeField] MapSetting mapSetting = null;
-    private GameObject zombiePool;
+    private GameObject zombieBox;
 
     private void Start()
     {
-        zombiePool = this.gameObject.gameObject;
+        zombieBox = this.gameObject.gameObject;
+    }
+
+    private void FieldZombieInit()
+    {
+        //for(int i = 0; i < )
     }
 }
