@@ -10,9 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f08b814364b21949abcb9941bb01833, type: 3}
-  m_Name: New Map Setting
+  m_Name: Map_2
   m_EditorClassIdentifier: 
-  wave:
-  - spawnClasses: []
-  - spawnClasses: []
-  - spawnClasses: []
+  spawnClasses:
+  - zombieJob: 0
+    zombiePrefab: {fileID: 1402969162259532875, guid: e8113b4e598f92c43b135feda22841ed,
+      type: 3}
+    spawnNum: 6
+    spawnSpeed: 2.5
+  - zombieJob: 0
+    zombiePrefab: {fileID: 1402969162259532875, guid: 463631d1652f3fb4eb1989de6ff84112,
+      type: 3}
+    spawnNum: 10
+    spawnSpeed: 1.8

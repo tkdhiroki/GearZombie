@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using UniRx.Triggers;
 
 
 public class ZombieScript : MonoBehaviour
@@ -14,11 +15,11 @@ public class ZombieScript : MonoBehaviour
 
     private GameObject parent;
 
-    [SerializeField] private Transform initPosParent = null;
+    private Transform initPosParent = null;
     private List<Transform> initPos = new List<Transform>();
 
     // 城の耐久地
-    [SerializeField] private GameObject targetObject = null;
+    private GameObject targetObject = null;
 
     private void OnValidate()
     {
@@ -31,19 +32,24 @@ public class ZombieScript : MonoBehaviour
     {
         maxHp = zombie.Hp;
         parent = this.transform.parent.gameObject;
+        Debug.Log(parent.name);
+        initPosParent = GameObject.Find("InitPositon").GetComponent<Transform>();
+        targetObject = GameObject.Find("target");
+        Debug.Log(targetObject.name);
 
         foreach(Transform pos in initPosParent)
         {
             initPos.Add(pos);
         }
+        Init();
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            this.Init();
-        }
+        //if(Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    this.Init();
+        //}
     }
 
     /// <summary>
@@ -57,13 +63,6 @@ public class ZombieScript : MonoBehaviour
         zombie.Hp = hp;
     }
 
-    private void ZombieMove()
-    {
-        int speed = zombie.Speed;
-
-
-    }
-
     private int InitRandomHeight()
     {
         int minmax = 4;
@@ -74,18 +73,44 @@ public class ZombieScript : MonoBehaviour
     public void Init()
     {
         int y = InitRandomHeight();
-        parent.transform.position = initPos[0].position + new Vector3(0, y);
-        Observable.EveryUpdate()
-            .Subscribe(_ =>
-            {
+        parent.transform.position = initPos[2].position + new Vector3(0, y);
+        //Observable.EveryUpdate()
+        //    .Subscribe(_ =>
+        //    {
 
-            }).AddTo(this.gameObject);
+        //    }).AddTo(this.gameObject);
+        this.gameObject.SetActive(true);
+
         ZombieMove();
+    }
+
+    private void ZombieMove()
+    {
+        this.UpdateAsObservable()
+            .Subscribe( _ => Moving() );
+
+        Observable.EveryUpdate()
+                  .Subscribe(_ => Moving())
+                  .AddTo(this.gameObject);
+    }
+
+    private void Moving()
+    {
+        float speed = zombie.Speed / 10.0f;
+        float step = speed * Time.deltaTime;
+        Vector3 pos = Vector3.zero;
+        pos.x = Vector3.MoveTowards(parent.transform.position, targetObject.transform.position, step).x;
+        parent.transform.position = new Vector3(pos.x, parent.transform.position.y, 0);
     }
 
     private void DeathZombie()
     {
         parent.SetActive(false);
         
+    }
+
+    private void Attack()
+    {
+
     }
 }
