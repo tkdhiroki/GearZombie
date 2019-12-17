@@ -20,7 +20,7 @@ public class TitleMgr : MonoBehaviour
     }
     public void resetButton()
     {
-        //UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         SoundMgr.BgmPlay(bgmnum);
     }
 }
