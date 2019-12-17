@@ -7,6 +7,7 @@ public class ZombieCreate : MonoBehaviour
     [SerializeField] private MapSetting mapSetting = null;
     private Transform zombieBox;
     private List<ZombieSpawnClass> zombieSpawn = new List<ZombieSpawnClass>();
+    private float time = 0;
 
     private void Start()
     {
@@ -25,18 +26,26 @@ public class ZombieCreate : MonoBehaviour
         // １マップ分のエネミー生成
         for (int listNum = 0; listNum < zombieSpawn.Count; listNum++)
         {
-            for(int spawn = 0;spawn < zombieSpawn[listNum].spawnNum; spawn++)
+            for (int spawn = 0; spawn < zombieSpawn[listNum].spawnNum; spawn++)
             {
                 var obj = Instantiate(zombieSpawn[listNum].zombiePrefab, zombieBox);
                 obj.SetActive(false);
             }
         }
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         Debug.Log(zombieBox.childCount);
-        #endif
+#endif
     }
     private void SpawnZombie()
     {
-        
+        time += Time.deltaTime;
+        for (int pop = 0; pop < zombieSpawn.Count; pop++)
+        {
+            if (time > zombieSpawn[pop].spawnSpeed)
+            {
+                // zombie genelate
+                zombieSpawn[pop].zombiePrefab.GetComponent<ZombieScript>().Init();
+            }
+        }
     }
 }
