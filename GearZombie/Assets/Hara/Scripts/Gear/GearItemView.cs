@@ -8,7 +8,7 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 {
     private CanvasGroup canvasGroup = null;
 
-    private Vector3 startPos;
+    public Vector3 StartPos { private set; get; }
 
     public Sprite GearSprite { private set; get; } = null;
     public Color GearColor { private set; get; }
@@ -40,7 +40,7 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = false;
-        startPos = transform.position;
+        StartPos = transform.position;
         GearSprite = image.sprite;
         GearColor = image.color;
     }
@@ -60,7 +60,7 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData"></param>
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-        transform.position = startPos;
+        transform.position = StartPos;
         canvasGroup.blocksRaycasts = true;
     }
 }

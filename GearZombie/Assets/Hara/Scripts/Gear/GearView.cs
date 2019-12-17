@@ -9,36 +9,37 @@ public class GearView : MonoBehaviour, IDropHandler
     public bool GearRotateFlag { set; get; } = false;
     public bool RotateGearDirection { set; private get; } = false;
 
-    private Image[] gearObjects = null;
+    [SerializeField, Header("歯車オブジェクト")] private Image[] gearObjects = null;
 
-    [SerializeField, Tooltip("歯車が1秒間で回転する角度")]
-    private float angle = 180;
+    [SerializeField, Tooltip("歯車が1秒間で回転する角度")] private float angle = 180;
 
     private int gearCount = 0;
 
+    private Coroutine coroutine = null;
+
+    private Slider createGauge = null;
+
     private void Awake()
     {
-        SetGearObject();
+        Init();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// ギアの回転をSTART
+    /// </summary>
+    public void StartRotate()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        RotateGear(RotateGearDirection);
+        if(GearRotateFlag == true) { return; }
+        GearRotateFlag = true;
+        coroutine = StartCoroutine(DoRotateGear(RotateGearDirection));
     }
 
     /// <summary>
     /// 歯車を回転させる処理
     /// </summary>
-    private void RotateGear(bool direction)
+    private IEnumerator DoRotateGear(bool direction)
     {
-        if(GearRotateFlag == false || gearCount <= 0) { return; }
+        if(gearCount <= 0) { yield break; }
 
         var direct = 0;
         if(RotateGearDirection == true)
@@ -50,32 +51,56 @@ public class GearView : MonoBehaviour, IDropHandler
             direct = 1;
         }
 
-        for(int i = 0; i < gearObjects.Length; i++)
+        while(GearRotateFlag == true && createGauge.value < createGauge.maxValue)
         {
-            int num = i + 1;
-            if(num % 2 == 0)
+            for(int i = 0; i < gearObjects.Length; i++)
             {
-                gearObjects[i].transform.RotateAround(gearObjects[i].transform.position, Vector3.forward, -direct * (angle * Time.deltaTime));
+                int num = i + 1;
+                if(num % 2 == 0)
+                {
+                    gearObjects[i].transform.RotateAround(gearObjects[i].transform.position, Vector3.forward, -direct * (angle * Time.deltaTime));
+                }
+                else
+                {
+                    gearObjects[i].transform.RotateAround(gearObjects[i].transform.position, Vector3.forward, direct * (angle * Time.deltaTime));
+                }
             }
-            else
-            {
-                gearObjects[i].transform.RotateAround(gearObjects[i].transform.position, Vector3.forward, direct * (angle * Time.deltaTime));
-            }
+
+            // ゲージの加算
+            createGauge.value += (createGauge.maxValue / 200f) * (((gearCount - 1) * 0.5f) + 1);
+
+            yield return null;
+        }
+        if(createGauge.value >= createGauge.maxValue)
+        {
+            BreakGear();
         }
     }
 
     /// <summary>
     /// ギアオブジェクトの割り当て
     /// </summary>
-    private void SetGearObject()
+    private void Init()
     {
-        gearObjects = new Image[transform.childCount];
-        for(int i = 0; i < gearObjects.Length; i++)
+        for(int i = 1; i < gearObjects.Length; i++)
         {
-            gearObjects[i] = transform.GetChild(i).GetComponent<Image>();
             gearObjects[i].gameObject.SetActive(false);
         }
-        gearObjects[0].gameObject.SetActive(true);
+
+        createGauge = GetComponent<Slider>();
+    }
+
+    /// <summary>
+    /// トラップ生成が完了したら実行
+    /// </summary>
+    private void BreakGear()
+    {
+        gearCount = 0;
+        for(int i = 1; i < gearObjects.Length; i++)
+        {
+            gearObjects[i].gameObject.SetActive(false);
+        }
+        createGauge.value = 0;
     }
 
     /// <summary>
@@ -90,6 +115,7 @@ public class GearView : MonoBehaviour, IDropHandler
             if(gearCount < gearObjects.Length - 1)
             {
                 item.gameObject.SetActive(false);
+                item.transform.position = item.StartPos;
                 gearCount++;
                 gearObjects[gearCount].sprite = item.GearSprite;
                 gearObjects[gearCount].color = item.GearColor;

@@ -38,7 +38,7 @@ public class GearControl : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             gearObject.RotateGearDirection = true;
-            gearObject.GearRotateFlag = true;
+            gearObject.StartRotate();
         }
         if(Input.GetMouseButtonUp(0))
         {
@@ -47,7 +47,7 @@ public class GearControl : MonoBehaviour
         if(Input.GetMouseButtonDown(1))
         {
             gearObject.RotateGearDirection = false;
-            gearObject.GearRotateFlag = true;
+            gearObject.StartRotate();
         }
         if(Input.GetMouseButtonUp(1))
         {
