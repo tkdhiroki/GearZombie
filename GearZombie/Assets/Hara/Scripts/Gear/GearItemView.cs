@@ -15,6 +15,9 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     private Image image = null;
 
+    [SerializeField, Tooltip("在庫")] private int stock = 5;
+    public int Stock { set { stock = value; } get { return stock; } }
+
     private void Awake()
     {
         if(canvasGroup == null) { canvasGroup = GetComponent<CanvasGroup>(); }
@@ -30,7 +33,7 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     // Update is called once per frame
     void Update()
     {
-        
+        StockCheck();
     }
 
     /// <summary>
@@ -62,5 +65,20 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         transform.position = StartPos;
         canvasGroup.blocksRaycasts = true;
+    }
+
+    /// <summary>
+    /// 在庫が0になったら非表示、それ以外なら表示
+    /// </summary>
+    private void StockCheck()
+    {
+        if(stock > 0)
+        {
+            image.enabled = true;
+        }
+        else
+        {
+            image.enabled = false;
+        }
     }
 }

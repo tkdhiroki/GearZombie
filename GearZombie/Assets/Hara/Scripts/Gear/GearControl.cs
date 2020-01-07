@@ -37,21 +37,31 @@ public class GearControl : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            gearObject.RotateGearDirection = true;
-            gearObject.StartRotate();
+            if(gearObject.Coroutine == null)
+            {
+                gearObject.StartRotate(true);
+            }
         }
         if(Input.GetMouseButtonUp(0))
         {
-            if(gearObject.GearRotateFlag == true) { gearObject.GearRotateFlag = false; }
+            if(gearObject.Coroutine != null)
+            {
+                gearObject.StopRotate();
+            }
         }
         if(Input.GetMouseButtonDown(1))
         {
-            gearObject.RotateGearDirection = false;
-            gearObject.StartRotate();
+            if(gearObject.Coroutine == null)
+            {
+                gearObject.StartRotate(false);
+            }
         }
         if(Input.GetMouseButtonUp(1))
         {
-            if(gearObject.GearRotateFlag == true) { gearObject.GearRotateFlag = false; }
+            if(gearObject.Coroutine != null)
+            {
+                gearObject.StopRotate();
+            }
         }
     }
 
@@ -69,7 +79,7 @@ public class GearControl : MonoBehaviour
 
             EventTrigger.Entry pointerExit = new EventTrigger.Entry();
             pointerExit.eventID = EventTriggerType.PointerExit;
-            pointerExit.callback.AddListener((x) => { gearFlag = false; if(gearObject.GearRotateFlag == true) { gearObject.GearRotateFlag = false; } });
+            pointerExit.callback.AddListener((x) => { gearFlag = false; });
             trigger.triggers.Add(pointerExit);
         }
     }

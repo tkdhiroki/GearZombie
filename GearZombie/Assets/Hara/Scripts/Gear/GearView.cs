@@ -6,16 +6,13 @@ using UnityEngine.EventSystems;
 
 public class GearView : MonoBehaviour, IDropHandler
 {
-    public bool GearRotateFlag { set; get; } = false;
-    public bool RotateGearDirection { set; private get; } = false;
-
     [SerializeField, Header("歯車オブジェクト")] private Image[] gearObjects = null;
 
     [SerializeField, Tooltip("歯車が1秒間で回転する角度")] private float angle = 180;
 
     private int gearCount = 0;
 
-    private Coroutine coroutine = null;
+    public Coroutine Coroutine { private set; get; } = null;
 
     private Slider createGauge = null;
 
@@ -27,11 +24,19 @@ public class GearView : MonoBehaviour, IDropHandler
     /// <summary>
     /// ギアの回転をSTART
     /// </summary>
-    public void StartRotate()
+    public void StartRotate(bool direction)
     {
-        if(GearRotateFlag == true) { return; }
-        GearRotateFlag = true;
-        coroutine = StartCoroutine(DoRotateGear(RotateGearDirection));
+        Coroutine = StartCoroutine(DoRotateGear(direction));
+    }
+
+    /// <summary>
+    /// ギアの回転をSTOP
+    /// </summary>
+    public void StopRotate()
+    {
+        StopCoroutine(Coroutine);
+        createGauge.value = 0;
+        Coroutine = null;
     }
 
     /// <summary>
@@ -42,7 +47,7 @@ public class GearView : MonoBehaviour, IDropHandler
         if(gearCount <= 0) { yield break; }
 
         var direct = 0;
-        if(RotateGearDirection == true)
+        if(direction == true)
         {
             direct = -1;
         }
@@ -51,7 +56,7 @@ public class GearView : MonoBehaviour, IDropHandler
             direct = 1;
         }
 
-        while(GearRotateFlag == true && createGauge.value < createGauge.maxValue)
+        while(createGauge.value < createGauge.maxValue)
         {
             for(int i = 0; i < gearObjects.Length; i++)
             {
@@ -74,6 +79,7 @@ public class GearView : MonoBehaviour, IDropHandler
         if(createGauge.value >= createGauge.maxValue)
         {
             BreakGear();
+            Coroutine = null;
         }
     }
 
@@ -114,8 +120,11 @@ public class GearView : MonoBehaviour, IDropHandler
         {
             if(gearCount < gearObjects.Length - 1)
             {
-                item.gameObject.SetActive(false);
                 item.transform.position = item.StartPos;
+                if(item.Stock > 0)
+                {
+                    item.Stock--;
+                }
                 gearCount++;
                 gearObjects[gearCount].sprite = item.GearSprite;
                 gearObjects[gearCount].color = item.GearColor;
