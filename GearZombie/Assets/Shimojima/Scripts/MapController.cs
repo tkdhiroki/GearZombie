@@ -7,11 +7,12 @@ public class MapController : MonoBehaviour
     private bool isTarget = false;
     private bool isMax = true;
     private bool firstTime = false;
-    private float alpha = 0;
+    private float alpha = 1;
+    private Color c;
 
     void Start()
     {
-        
+        c = gameObject.GetComponent<SpriteRenderer>().color;
     }
     
     void Update()
@@ -25,29 +26,30 @@ public class MapController : MonoBehaviour
         {
             if (!firstTime)
             {
-                gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+                c = Color.yellow;
                 firstTime = true;
             }
 
-            if (gameObject.GetComponent<SpriteRenderer>().color.a > alpha && isMax)
+            if (alpha > 0 && isMax)
             {
-                Color c = gameObject.GetComponent<SpriteRenderer>().color;
-                gameObject.GetComponent<SpriteRenderer>().color = new Color(c.r, c.b, c.g, c.a - 0.0001f);
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, alpha);
+                alpha -= 0.03f;
             }
-            else if (gameObject.GetComponent<SpriteRenderer>().color.a <= alpha)
+            else if (alpha <= 0)
             {
                 isMax = false;
             }
 
-            if (!isMax)
+            if (alpha < 1 && !isMax)
             {
-                Color c = gameObject.GetComponent<SpriteRenderer>().color;
-                gameObject.GetComponent<SpriteRenderer>().color = new Color(c.r, c.b, c.g, c.a + 0.0001f);
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, alpha);
+                alpha += 0.03f;
             }
-            else if (gameObject.GetComponent<SpriteRenderer>().color.a >= 1)
+            else if (alpha >= 1)
             {
                 isMax = true;
             }
+
         }
     }
 
