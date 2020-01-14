@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UniRx;
-using System.Linq;
 
 public class ZombieCreate : MonoBehaviour
 {
+    [SerializeField] private GameObject obj = null;
     [SerializeField] private MapSetting mapSetting = null;
     [SerializeField] private Transform zombieBox;
     //private List<GameObject> zombieVariety = new List<GameObject>();
     private List<ZombieSpawnClass> zombieSpawn = new List<ZombieSpawnClass>();
 
-    private List<GameObject> fieldZombie = new List<GameObject>();
+    //private List<GameObject> fieldZombie = new List<GameObject>();
+
+    // 生成するゾンビの箱を格納用
+    private List<GameObject> zombieJobParent = new List<GameObject>();
 
     private float time = 0;
     private bool initTime = false;
@@ -37,66 +39,30 @@ public class ZombieCreate : MonoBehaviour
         // count check
         if (zombieSpawn.Count < 1) return;
 
+
         // １マップ分のエネミー生成
         for (int listNum = 0; listNum < zombieSpawn.Count; listNum++)
         {
+            Debug.Log(listNum);
+            var parent = Instantiate(obj, zombieBox);
+            parent.name = zombieSpawn[listNum].zombiePrefab.name;
+
+            parent.AddComponent<ZombieGenerateGame>();
+            var comp = parent.GetComponent<ZombieGenerateGame>();
+            comp.SetZombieNum = zombieSpawn[listNum].spawnNum;      // 数
+            comp.SetZombieSpeed = zombieSpawn[listNum].spawnSpeed;  // 速度
+            zombieJobParent.Add(parent);
+
             //zombieVariety.Add(Instantiate(new List<GameObject>()));
 
             for (int spawn = 0; spawn < zombieSpawn[listNum].spawnNum; spawn++)
             {
-                var obj = Instantiate(zombieSpawn[listNum].zombiePrefab, zombieBox);
-                fieldZombie.Add(obj);
+                var obj = Instantiate(zombieSpawn[listNum].zombiePrefab, zombieJobParent[listNum].transform);
                 obj.SetActive(false);
             }
-            
-        }
-#if UNITY_EDITOR
-        Debug.Log(zombieBox.childCount);
-#endif
-        initTime = true;
-    }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    private void SpawnZombie()
-    {
-        if (fieldZombie.FirstOrDefault(x => x.activeSelf == false) == null) return;
-
-        //time += Time.deltaTime;
-        for (int pop = 0; pop < zombieSpawn.Count; pop++)
-        {
-            Observable.EveryUpdate()
-                      .Subscribe(_ => ZombieInit(pop))
-                      .AddTo(this.gameObject);
-            //if (time > zombieSpawn[pop].spawnSpeed)
-            //{
-            //    //if (!fieldZombie.Contains(zombieSpawn[pop].zombiePrefab)) return;
-            //    // zombie genelate
-            //    var zombie = fieldZombie.Where
-            //                            (x => x.GetComponent<ZombieJobParent>().zombieJob == zombieSpawn[pop].zombieJob)
-            //                            .FirstOrDefault(x => x.activeSelf == false);
-
-            //    zombie.SetActive(true);
-            //    time = 0;
-            //}
         }
     }
 
-    private void ZombieInit(int id)
-    {
-        time += Time.deltaTime;
 
-        if (time > zombieSpawn[id].spawnSpeed)
-        {
-            // zombie genelate
-            var zombie = fieldZombie.Where
-                                    (x => x.GetComponent<ZombieJobParent>().zombieJob == zombieSpawn[id].zombieJob)
-                                    .FirstOrDefault(x => x.activeSelf == false);
-
-            zombie.SetActive(true);
-            time = 0;
-            //zombie.transform.GetChild(0).GetComponent<ZombieScript>().Init();
-        }
-    }
 }

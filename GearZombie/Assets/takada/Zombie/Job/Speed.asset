@@ -16,7 +16,6 @@ MonoBehaviour:
   sprite: {fileID: 21300014, guid: e6fc5dbf00ec28042bb42d353d13e000, type: 3}
   hp: 0
   attack: 0
-  deffence: 0
-  speed: 0
+  speed: 5
   attackSpeed: 0
   state: 0

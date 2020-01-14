@@ -15,8 +15,8 @@ public class ZombieScript : MonoBehaviour
 
     private GameObject parent;
 
-    private Transform initPosParent = null;
-    private List<Transform> initPos = new List<Transform>();
+    private Transform initPos = null;
+    //private List<Transform> initPos = new List<Transform>();
 
     // 城の耐久地
     private GameObject targetObject = null;
@@ -32,15 +32,10 @@ public class ZombieScript : MonoBehaviour
     {
         maxHp = zombie.Hp;
         parent = this.transform.parent.gameObject;
-        Debug.Log(parent.name);
-        initPosParent = GameObject.Find("InitPositon").GetComponent<Transform>();
+        //Debug.Log(parent.name);
+        initPos = GameObject.Find("InitPositon").GetComponent<Transform>();
         targetObject = GameObject.Find("target");
-        Debug.Log(targetObject.name);
-
-        foreach(Transform pos in initPosParent)
-        {
-            initPos.Add(pos);
-        }
+        //Debug.Log(targetObject.name);
         Init();
     }
 
@@ -63,7 +58,7 @@ public class ZombieScript : MonoBehaviour
         zombie.Hp = hp;
     }
 
-    private int InitRandomHeight()
+    private float InitRandomHeight()
     {
         int minmax = 4;
 
@@ -72,14 +67,15 @@ public class ZombieScript : MonoBehaviour
 
     public void Init()
     {
-        int y = InitRandomHeight();
-        parent.transform.position = initPos[2].position + new Vector3(0, y);
+        //Debug.Log("Call");
+        float y = InitRandomHeight();
+        parent.transform.position = initPos.position + new Vector3(0, y);
         //Observable.EveryUpdate()
         //    .Subscribe(_ =>
         //    {
 
         //    }).AddTo(this.gameObject);
-        this.gameObject.SetActive(true);
+        //this.gameObject.SetActive(true);
 
         ZombieMove();
     }
