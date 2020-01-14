@@ -963,7 +963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff74fa4f47a8447a899404a2ecac4652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeTime: 2
+  fadeTime: 1.5
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!4 &1138135598
 Transform:

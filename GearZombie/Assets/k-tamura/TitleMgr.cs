@@ -5,7 +5,8 @@ using UnityEngine;
 public class TitleMgr : MonoBehaviour
 {
     [SerializeField]
-    int bgmnum=1;
+    int bgmnum;
+    bool check;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,5 +23,15 @@ public class TitleMgr : MonoBehaviour
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         SoundMgr.BgmPlay(bgmnum);
+    }
+    public void nextButton()
+    {
+        bgmnum++;
+        check=SoundMgr.BgmPlay(bgmnum);
+        if(!check)
+        {
+            bgmnum = -1;
+            nextButton();
+        }
     }
 }

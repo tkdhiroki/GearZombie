@@ -8,17 +8,30 @@ public class SoundMgr :SingletonMonoBehaviour<SoundMgr>
     AudioSource[] audioSource;
     [SerializeField]
     AudioClip[] audioClip;
-    public static void BgmPlay(int i)
+    bool played;
+    public static bool BgmPlay(int i)
     {
+        if (i >= instance.audioClip.Length)
+            return false;
         instance.audioSource[0].clip = instance.audioClip[i];
-        instance.audioSource[0].loop = true;
-        instance.audioSource[0].volume=0.7f;
+        instance.audioSource[0].volume = 0.7f;
         instance.audioSource[0].Play();
+        instance.played = true;
+        return true;
+
+
 
     }
     private void Start()
     {
         DontDestroyOnLoad(this);
+    }
+    private void Update()
+    {
+       if(!instance.audioSource[0].isPlaying && instance.played)
+        {
+            instance.audioSource[0].Play();
+        }
     }
     public static void SeShot(int soundNum)
     {
