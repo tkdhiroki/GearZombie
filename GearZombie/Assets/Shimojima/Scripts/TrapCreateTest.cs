@@ -13,7 +13,7 @@ public class TrapCreateTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CreateTrap();
+        //CreateTrap();
     }
 
     private void CreateTrap()
