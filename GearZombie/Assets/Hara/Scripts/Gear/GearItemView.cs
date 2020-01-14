@@ -15,8 +15,13 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     private Image image = null;
 
+    [SerializeField, Tooltip("ギアID")] private int id = 0;
+    public int Id { set { id = value; } get { return id; } }
+
     [SerializeField, Tooltip("在庫")] private int stock = 5;
     public int Stock { set { stock = value; } get { return stock; } }
+
+    [SerializeField, Tooltip("在庫カウンター")] private Text stockCounter = null;
 
     private void Awake()
     {
@@ -72,13 +77,17 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// </summary>
     private void StockCheck()
     {
+        stockCounter.text = "× " + stock.ToString();
+        stockCounter.color = image.color;
         if(stock > 0)
         {
             image.enabled = true;
+            stockCounter.enabled = true;
         }
         else
         {
             image.enabled = false;
+            stockCounter.enabled = false;
         }
     }
 }
