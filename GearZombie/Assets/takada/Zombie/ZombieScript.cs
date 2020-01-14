@@ -21,6 +21,10 @@ public class ZombieScript : MonoBehaviour
     // 城の耐久地
     private GameObject targetObject = null;
 
+
+    private float attackRange = 0.5f;
+    private float attackTime = 0;
+
     private void OnValidate()
     {
         this.GetComponent<SpriteRenderer>().sprite = zombie.Sprite;
@@ -56,6 +60,10 @@ public class ZombieScript : MonoBehaviour
         int hp = zombie.Hp - damage;
         HpBar.fillAmount = hp / maxHp;
         zombie.Hp = hp;
+        if(zombie.Hp <= 0)
+        {
+            DeathZombie();
+        }
     }
 
     private float InitRandomHeight()
@@ -105,8 +113,28 @@ public class ZombieScript : MonoBehaviour
         
     }
 
+    private void AttackCheck()
+    {
+        float diff = Vector2.Distance(targetObject.transform.position, this.transform.position);
+
+        // 攻撃可能範囲にいなければ攻撃
+        if (diff > attackRange) return;
+
+        Observable.EveryUpdate()
+                  .Subscribe(_ => Attack())
+                  .AddTo(this.gameObject);
+    }
+
     private void Attack()
     {
+        attackTime += Time.deltaTime;
 
+        if (attackTime > zombie.AttackSpeed)
+        {
+            // 城への攻撃処理
+            CastleMgr.HpDecrease(zombie.Attack);
+
+            attackTime = 0;
+        }
     }
 }
