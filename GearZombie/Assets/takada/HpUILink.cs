@@ -11,13 +11,14 @@ public class HpUILink : MonoBehaviour
 
     private void Start()
     {
-        linkObject = this.transform.root;
+        linkObject = this.transform.parent.parent;
         uiRectTransform = this.GetComponent<RectTransform>();
-        Debug.Log(linkObject);
+        uiRectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, linkObject.position + offset);
+        //Debug.Log(linkObject.name);
     }
 
     void Update()
     {
-        uiRectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, linkObject.position + offset);
+        uiRectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, linkObject.position + offset); 
     }
 }
