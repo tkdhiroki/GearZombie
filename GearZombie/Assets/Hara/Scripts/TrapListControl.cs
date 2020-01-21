@@ -61,7 +61,7 @@ public class TrapListControl : MonoBehaviour
         TrapManager.Instance.tList = new TrapManager.TrapList[trapList.Length];
         for(int i = 0; i < TrapManager.Instance.tList.Length; i++)
         {
-            TrapManager.Instance.tList[i].trap = new TrapData();
+            TrapManager.Instance.tList[i].trap = ScriptableObject.CreateInstance<TrapData>();
         }
     }
 
