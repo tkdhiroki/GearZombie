@@ -67,7 +67,7 @@ public class MapManager : Singleton<MapManager>
             targetObj.GetComponent<SpriteRenderer>().color = originColor;
             firstTime = false;
 
-            if (targetObj != obj && obj != null && obj.GetComponent<MapController>() != null)
+            if (targetObj != obj && obj.name != "nomap")
             {
                 //既に選択されているものと違う場合はターゲットを変更する
                 targetObj = obj;

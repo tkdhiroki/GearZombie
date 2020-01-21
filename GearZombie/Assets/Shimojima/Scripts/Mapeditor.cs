@@ -134,13 +134,17 @@ public class Mapeditor : MonoBehaviour
         int size = inputSize.value + 1;
         Vector3 pos = transform.position;
         GameObject obj = new GameObject();
-        obj.name = "map";
         obj.AddComponent<SpriteRenderer>().sprite = mapObj[0];
         obj.transform.localScale = new Vector3(defaultSize * size, defaultSize * size, 1);
         obj.GetComponent<SpriteRenderer>().color = changeColor;
         if (hasScript)
         {
+            obj.name = "map";
             obj.AddComponent<MapController>();
+        }
+        else
+        {
+            obj.name = "nomap";
         }
         if (size != 1)
         {
