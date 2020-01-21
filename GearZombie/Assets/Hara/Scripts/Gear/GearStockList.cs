@@ -50,7 +50,8 @@ public class GearStockList : SingletonMonoBehaviour<GearStockList>
 
         //Debug.Log("GET!1");
 
-        int id = UnityEngine.Random.Range(0, GearItemList.Length - 1);
+        int id = UnityEngine.Random.Range(0, GearItemList.Length * 10);
+        id = Mathf.FloorToInt(id / 10f);
         Debug.Log(id + "+" + GearItemList[id].Stock);
         GearItemList[id].Stock = GearItemList[id].Stock + 1;
         Debug.Log(GearItemList[id].Stock);
@@ -63,6 +64,7 @@ public class GearStockList : SingletonMonoBehaviour<GearStockList>
     /// <param name="pos">表示Position</param>
     public void GearGetAnimation(Vector3 pos, Color col)
     {
+        Debug.Log(col);
         SpriteRenderer sprite = spritePool.FirstOrDefault(X => !X.gameObject.activeSelf);
         sprite.color = new Color(col.r, col.g, col.b, 0);
 

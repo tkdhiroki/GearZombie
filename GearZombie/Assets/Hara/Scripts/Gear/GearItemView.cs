@@ -32,7 +32,7 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     // Start is called before the first frame update
     void Start()
     {
-        
+        GearColor = image.color;
     }
 
     // Update is called once per frame
