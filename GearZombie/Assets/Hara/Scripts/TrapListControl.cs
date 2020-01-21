@@ -14,11 +14,38 @@ public class TrapListControl : MonoBehaviour
     /// 生成したトラップをリスト内に表示
     /// </summary>
     /// <param name="trapSprite"></param>
-    public void OutputTrap(Sprite trapSprite)
+    public void OutputTrap(Sprite trapSprite, int trapID, int trapLevel)
     {
         if(trapIndex >= trapList.Length) { return; }
         trapList[trapIndex].sprite = trapSprite;
         trapList[trapIndex].enabled = true;
+        string trapName;
+        int baseTrapHp;
+        switch(trapID)
+        {
+            case 0:
+                trapName = "トラバサミ";
+                baseTrapHp = 25;
+                break;
+            case 1:
+                trapName = "弓矢";
+                baseTrapHp = 20;
+                break;
+            case 2:
+                trapName = "炎";
+                baseTrapHp = 10;
+                break;
+            case 3:
+                trapName = "爆弾";
+                baseTrapHp = 0;
+                break;
+            default:
+                Debug.Log(trapID);
+                return;
+        }
+        TrapManager.Instance.tList[trapIndex].name = trapName;
+        TrapManager.Instance.tList[trapIndex].trap.id = trapID;
+        TrapManager.Instance.tList[trapIndex].trap.hp = baseTrapHp * trapLevel;
         trapIndex++;
     }
 
@@ -30,6 +57,11 @@ public class TrapListControl : MonoBehaviour
         foreach(Image trap in trapList)
         {
             trap.enabled = false;
+        }
+        TrapManager.Instance.tList = new TrapManager.TrapList[trapList.Length];
+        for(int i = 0; i < TrapManager.Instance.tList.Length; i++)
+        {
+            TrapManager.Instance.tList[i].trap = ScriptableObject.CreateInstance<TrapData>();
         }
     }
 
