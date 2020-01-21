@@ -6,9 +6,6 @@ using UnityEngine.EventSystems;
 
 public class GearManager : MonoBehaviour, IDropHandler
 {
-    private EventTrigger trigger = null;
-    private bool gearFlag = false;
-
     private void Awake()
     {
         
