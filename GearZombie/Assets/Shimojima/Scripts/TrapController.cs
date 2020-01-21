@@ -13,7 +13,11 @@ public class TrapController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //CreateTrap();
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            TrapManager.Instance.hasTrap = true;
+        }
+        CreateTrap();
     }
 
     private void CreateTrap()
@@ -21,7 +25,7 @@ public class TrapController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 screenPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            TrapManager.Instance.TrapCreate(0, screenPos);
+            TrapManager.Instance.TrapCreate(0);
         }
     }
 }

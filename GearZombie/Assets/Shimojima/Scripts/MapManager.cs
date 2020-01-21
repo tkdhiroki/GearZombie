@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class MapManager : Singleton<MapManager>
 {
-    private static bool isChoice = false;
-    private static bool firstTime, isMax = false;
+    public bool IsChoice { get; set; }   //mapが選択されているか
+
+    public GameObject targetObj;    //現在選択されているターゲットマップ
+    private static bool firstTime, isMax = false;   //既に選択されているか,アルファ値が最大か
     private static float alpha = 0f;
-    private static GameObject targetObj;
-    private static Color c, originColor;
+    private static Color c, originColor;    //変更掛ける色,targetObjの元の色
 
 
     private void Update()
@@ -19,9 +20,9 @@ public class MapManager : Singleton<MapManager>
     /// <summary>
     /// カラーを黄色にしてオブジェクトを強調します。
     /// </summary>
-    public static void ColorFade()
+    public void ColorFade()
     {
-        if (isChoice)
+        if (MapManager.Instance.IsChoice)
         {
             if (!firstTime)
             {
@@ -42,7 +43,7 @@ public class MapManager : Singleton<MapManager>
 
             if (alpha < 1 && !isMax)
             {
-                targetObj.GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, alpha);
+                MapManager.Instance.targetObj.GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, alpha);
                 alpha += 0.03f;
             }
             else if (alpha >= 1)
@@ -56,34 +57,38 @@ public class MapManager : Singleton<MapManager>
     /// マップオブジェクトの選択
     /// </summary>
     /// <param name="obj"></param>
-    public static void IsChoice(GameObject obj)
+    public void ChoiceTarget(GameObject obj)
     {
-        if (isChoice)
+        if (IsChoice)
         {
-            isChoice = false;
+            if (TrapManager.Instance.hasTrap) { return; }
+
+            IsChoice = false;
             targetObj.GetComponent<SpriteRenderer>().color = originColor;
             firstTime = false;
 
-            if (targetObj != obj)
+            if (targetObj != obj && obj != null && obj.GetComponent<MapController>() != null)
             {
+                //既に選択されているものと違う場合はターゲットを変更する
                 targetObj = obj;
                 originColor = targetObj.GetComponent<SpriteRenderer>().color;
-                isChoice = true;
+                IsChoice = true;
             }
-            else if (targetObj == obj)
+            else
             {
-
+                //既に選択されているものと同じ場合はターゲットをnullにする
                 targetObj = null;
             }
         }
         else
         {
+            //ターゲットがnullの場合は選択されたmapをターゲットにする
             if (targetObj == null)
             {
                 targetObj = obj;
                 originColor = targetObj.GetComponent<SpriteRenderer>().color;
             }
-            isChoice = true;
+            IsChoice = true;
         }
         
     }
