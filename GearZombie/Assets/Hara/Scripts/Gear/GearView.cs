@@ -10,11 +10,22 @@ public class GearView : MonoBehaviour, IDropHandler
 
     [SerializeField, Tooltip("歯車が1秒間で回転する角度")] private float angle = 180;
 
+    [SerializeField] private Button resetButton = null;
+
+    [SerializeField, Header("ギアパーツ")] private GearItemView[] gears = null;
+
+    [SerializeField, Header("トラップ"), Tooltip("生成結果Image")] private Image trapImage = null;
+    [SerializeField, Tooltip("トラップImageリスト")] private Sprite[] trapSprites = null;
+
+    private int[] setGearId = null;
+
     private int gearCount = 0;
 
     public Coroutine Coroutine { private set; get; } = null;
 
     private Slider createGauge = null;
+
+    [SerializeField, Header("トラップリスト用のスクリプト")] private TrapListControl trap = null;
 
     private void Awake()
     {
@@ -34,6 +45,7 @@ public class GearView : MonoBehaviour, IDropHandler
     /// </summary>
     public void StopRotate()
     {
+        if(Coroutine == null) { return; }
         StopCoroutine(Coroutine);
         createGauge.value = 0;
         Coroutine = null;
@@ -72,7 +84,7 @@ public class GearView : MonoBehaviour, IDropHandler
             }
 
             // ゲージの加算
-            createGauge.value += (createGauge.maxValue / 200f) * (((gearCount - 1) * 0.5f) + 1);
+            createGauge.value += (createGauge.maxValue / 200f) * (((gearCount - 1) * 0.5f) + 0.75f);
 
             yield return null;
         }
@@ -90,10 +102,18 @@ public class GearView : MonoBehaviour, IDropHandler
     {
         for(int i = 1; i < gearObjects.Length; i++)
         {
-            gearObjects[i].gameObject.SetActive(false);
+            gearObjects[i].enabled = false;
         }
 
         createGauge = GetComponent<Slider>();
+        resetButton.onClick.AddListener(() => ResetGear());
+        trapImage.enabled = false;
+
+        setGearId = new int[4];
+        for(int i = 0; i < setGearId.Length; i++)
+        {
+            setGearId[i] = -1;
+        }
     }
 
     /// <summary>
@@ -101,12 +121,23 @@ public class GearView : MonoBehaviour, IDropHandler
     /// </summary>
     private void BreakGear()
     {
-        gearCount = 0;
         for(int i = 1; i < gearObjects.Length; i++)
         {
-            gearObjects[i].gameObject.SetActive(false);
+            gearObjects[i].enabled = false;
         }
+
+        for(int i = 0; i < setGearId.Length; i++)
+        {
+            if(setGearId[i] < 0) { break; }
+            setGearId[i] = -1;
+        }
+
+        gearCount = 0;
         createGauge.value = 0;
+        gearObjects[0].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        trapImage.enabled = false;
+
+        trap.OutputTrap(trapImage.sprite);
     }
 
     /// <summary>
@@ -118,6 +149,25 @@ public class GearView : MonoBehaviour, IDropHandler
         GearItemView item = eventData.pointerDrag.GetComponent<GearItemView>();
         if(item != null)
         {
+            if(gearCount == 0)
+            {
+                setGearId[gearCount] = item.Id;
+                gearObjects[gearCount].color = item.GearColor;
+                trapImage.sprite = trapSprites[setGearId[gearCount]];
+                trapImage.enabled = true;
+            }
+            else
+            {
+                if(item.Id == setGearId[0])
+                {
+                    setGearId[gearCount] = item.Id;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
             if(gearCount < gearObjects.Length - 1)
             {
                 item.transform.position = item.StartPos;
@@ -125,11 +175,36 @@ public class GearView : MonoBehaviour, IDropHandler
                 {
                     item.Stock--;
                 }
+                gearObjects[gearCount + 1].color = item.GearColor;
+                gearObjects[gearCount + 1].enabled = true;
                 gearCount++;
-                gearObjects[gearCount].sprite = item.GearSprite;
-                gearObjects[gearCount].color = item.GearColor;
-                gearObjects[gearCount].gameObject.SetActive(true);
             }
         }
+    }
+
+    /// <summary>
+    /// セットしたギアをリセットする
+    /// </summary>
+    private void ResetGear()
+    {
+        if(gearCount <= 0) { return; }
+        for(int i = 0; i < setGearId.Length; i++)
+        {
+            if(setGearId[i] < 0) { break; }
+
+            // ギアのカウントを戻す
+            gears[setGearId[i]].Stock++;
+
+            // ギアを非表示にする
+            gearObjects[i + 1].enabled = false;
+
+            // セットギアIDの初期化
+            setGearId[i] = -1;
+        }
+
+        // ギアを初期化
+        gearCount = 0;
+        gearObjects[0].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        trapImage.enabled = false;
     }
 }

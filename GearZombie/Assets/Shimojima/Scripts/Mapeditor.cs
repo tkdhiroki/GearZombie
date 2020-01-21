@@ -32,6 +32,8 @@ public class Mapeditor : MonoBehaviour
     private int number;
     [Tooltip("モード切替チェック")]
     public bool isEdit = true;
+    [Tooltip("スクリプトのアタッチをするかどうか")]
+    public bool hasScript = false;
     
     //public Vector2 stageSize;
 
@@ -69,6 +71,11 @@ public class Mapeditor : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
         {
             SpriteColorSave();
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            AddScript();
         }
 #endif
     }
@@ -131,6 +138,10 @@ public class Mapeditor : MonoBehaviour
         obj.AddComponent<SpriteRenderer>().sprite = mapObj[0];
         obj.transform.localScale = new Vector3(defaultSize * size, defaultSize * size, 1);
         obj.GetComponent<SpriteRenderer>().color = changeColor;
+        if (hasScript)
+        {
+            obj.AddComponent<MapController>();
+        }
         if (size != 1)
         {
             obj.transform.localPosition = new Vector3(pos.x + 0.56f * (size - 1), pos.y + 0.56f * (size - 1), pos.z);
@@ -182,6 +193,18 @@ public class Mapeditor : MonoBehaviour
                 changeColor = savedColor[number];
                 preview.color = changeColor;
             }
+        }
+    }
+
+    private void AddScript()
+    {
+        if (!hasScript)
+        {
+            hasScript = true;
+        }
+        else
+        {
+            hasScript = false;
         }
     }
 

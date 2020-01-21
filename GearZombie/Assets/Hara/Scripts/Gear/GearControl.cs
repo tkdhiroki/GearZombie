@@ -79,7 +79,7 @@ public class GearControl : MonoBehaviour
 
             EventTrigger.Entry pointerExit = new EventTrigger.Entry();
             pointerExit.eventID = EventTriggerType.PointerExit;
-            pointerExit.callback.AddListener((x) => { gearFlag = false; });
+            pointerExit.callback.AddListener((x) => { gearFlag = false; gearObject.StopRotate(); });
             trigger.triggers.Add(pointerExit);
         }
     }
