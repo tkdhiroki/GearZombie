@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TrapListControl : MonoBehaviour
+public class TrapListControl : SingletonMonoBehaviour<TrapListControl>
 {
 
     [SerializeField, Header("トラップリスト")] private Image[] trapList = null;
@@ -47,6 +47,35 @@ public class TrapListControl : MonoBehaviour
         TrapManager.Instance.tList[trapIndex].trap.id = trapID;
         TrapManager.Instance.tList[trapIndex].trap.hp = baseTrapHp * trapLevel;
         trapIndex++;
+    }
+
+    /// <summary>
+    /// トラップを使用したら実行
+    /// </summary>
+    public void TrapUse(int trapID)
+    {
+        if(trapID == trapList.Length || trapID < 0 || trapIndex - 1 < 0) { return; }
+
+        if(trapID == trapIndex - 1)
+        {
+            trapList[trapID].enabled = false;
+        }
+        else
+        {
+            for(int i = trapID; i < trapIndex; i++)
+            {
+                if(i != trapIndex - 1)
+                {
+                    trapList[i].sprite = trapList[i + 1].sprite;
+                }
+                else
+                {
+                    trapList[i].enabled = false;
+                }
+            }
+        }
+
+        trapIndex--;
     }
 
     /// <summary>

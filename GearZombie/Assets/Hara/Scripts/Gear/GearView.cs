@@ -25,7 +25,6 @@ public class GearView : MonoBehaviour, IDropHandler
 
     private Slider createGauge = null;
 
-    [SerializeField, Header("トラップリスト用のスクリプト")] private TrapListControl trap = null;
     private int trapLevel = 0;
 
     private void Awake()
@@ -122,7 +121,7 @@ public class GearView : MonoBehaviour, IDropHandler
     /// </summary>
     private void BreakGear()
     {
-        trap.OutputTrap(trapImage.sprite, setGearId[0], trapLevel);
+        TrapListControl.instance.OutputTrap(trapImage.sprite, setGearId[0], trapLevel);
         trapLevel = 0;
 
         for(int i = 1; i < gearObjects.Length; i++)
