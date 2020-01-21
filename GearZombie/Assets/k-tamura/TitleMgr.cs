@@ -7,6 +7,7 @@ public class TitleMgr : MonoBehaviour
     [SerializeField]
     int bgmnum;
     bool check;
+    bool _click;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,8 +17,11 @@ public class TitleMgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.F1))
+        if (Input.anyKey && !_click)
+        {
             SceneLoadManager.LoadScene("test");
+            _click = true;
+        }
     }
     public void resetButton()
     {
