@@ -6,6 +6,6 @@ public class MapController : MonoBehaviour
 {
     private void OnMouseDown()
     {
-        MapManager.IsChoice(gameObject);
+        MapManager.Instance.ChoiceTarget(gameObject);
     }
 }
