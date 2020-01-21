@@ -19,7 +19,7 @@ public class TitleMgr : MonoBehaviour
     {
         if (Input.anyKey && !_click)
         {
-            SceneLoadManager.LoadScene("test");
+            SceneLoadManager.LoadScene("MainGame");
             _click = true;
         }
     }

@@ -15,6 +15,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Title.unity
     guid: 7902c93dea450b44c90bdb0a0531a8d1
   - enabled: 1
+    path: Assets/Scenes/MainGame.unity
+    guid: 2f2cc8c52d2e04eaf989246424ac48c8
+  - enabled: 1
+    path: Assets/Scenes/Result.unity
+    guid: cb90034e80e16498dbfcdaa8b414bde6
+  - enabled: 1
     path: Assets/Hara/Scenes/test.unity
     guid: 2de8b20666472154e86b5654b43aad82
   - enabled: 1

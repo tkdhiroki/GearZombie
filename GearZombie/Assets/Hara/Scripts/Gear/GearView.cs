@@ -26,6 +26,7 @@ public class GearView : MonoBehaviour, IDropHandler
     private Slider createGauge = null;
 
     [SerializeField, Header("トラップリスト用のスクリプト")] private TrapListControl trap = null;
+    private int trapLevel = 0;
 
     private void Awake()
     {
@@ -121,6 +122,9 @@ public class GearView : MonoBehaviour, IDropHandler
     /// </summary>
     private void BreakGear()
     {
+        trap.OutputTrap(trapImage.sprite, setGearId[0], trapLevel);
+        trapLevel = 0;
+
         for(int i = 1; i < gearObjects.Length; i++)
         {
             gearObjects[i].enabled = false;
@@ -136,8 +140,6 @@ public class GearView : MonoBehaviour, IDropHandler
         createGauge.value = 0;
         gearObjects[0].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         trapImage.enabled = false;
-
-        trap.OutputTrap(trapImage.sprite);
     }
 
     /// <summary>
@@ -178,6 +180,7 @@ public class GearView : MonoBehaviour, IDropHandler
                 gearObjects[gearCount + 1].color = item.GearColor;
                 gearObjects[gearCount + 1].enabled = true;
                 gearCount++;
+                trapLevel++;
             }
         }
     }
@@ -205,6 +208,8 @@ public class GearView : MonoBehaviour, IDropHandler
         // ギアを初期化
         gearCount = 0;
         gearObjects[0].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
         trapImage.enabled = false;
+        trapLevel = 0;
     }
 }
