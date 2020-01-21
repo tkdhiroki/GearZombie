@@ -15,11 +15,15 @@ public class ZombieScript : MonoBehaviour
 
     private GameObject parent;
 
-    private Transform initPosParent = null;
-    private List<Transform> initPos = new List<Transform>();
+    private Transform initPos = null;
+    //private List<Transform> initPos = new List<Transform>();
 
     // 城の耐久地
     private GameObject targetObject = null;
+
+
+    private float attackRange = 0.5f;
+    private float attackTime = 0;
 
     private void OnValidate()
     {
@@ -32,15 +36,10 @@ public class ZombieScript : MonoBehaviour
     {
         maxHp = zombie.Hp;
         parent = this.transform.parent.gameObject;
-        Debug.Log(parent.name);
-        initPosParent = GameObject.Find("InitPositon").GetComponent<Transform>();
+        //Debug.Log(parent.name);
+        initPos = GameObject.Find("InitPositon").GetComponent<Transform>();
         targetObject = GameObject.Find("target");
-        Debug.Log(targetObject.name);
-
-        foreach(Transform pos in initPosParent)
-        {
-            initPos.Add(pos);
-        }
+        //Debug.Log(targetObject.name);
         Init();
     }
 
@@ -61,9 +60,13 @@ public class ZombieScript : MonoBehaviour
         int hp = zombie.Hp - damage;
         HpBar.fillAmount = hp / maxHp;
         zombie.Hp = hp;
+        if(zombie.Hp <= 0)
+        {
+            DeathZombie();
+        }
     }
 
-    private int InitRandomHeight()
+    private float InitRandomHeight()
     {
         int minmax = 4;
 
@@ -72,14 +75,15 @@ public class ZombieScript : MonoBehaviour
 
     public void Init()
     {
-        int y = InitRandomHeight();
-        parent.transform.position = initPos[2].position + new Vector3(0, y);
+        //Debug.Log("Call");
+        float y = InitRandomHeight();
+        parent.transform.position = initPos.position + new Vector3(0, y);
         //Observable.EveryUpdate()
         //    .Subscribe(_ =>
         //    {
 
         //    }).AddTo(this.gameObject);
-        this.gameObject.SetActive(true);
+        //this.gameObject.SetActive(true);
 
         ZombieMove();
     }
@@ -109,8 +113,28 @@ public class ZombieScript : MonoBehaviour
         
     }
 
+    private void AttackCheck()
+    {
+        float diff = Vector2.Distance(targetObject.transform.position, this.transform.position);
+
+        // 攻撃可能範囲にいなければ攻撃
+        if (diff > attackRange) return;
+
+        Observable.EveryUpdate()
+                  .Subscribe(_ => Attack())
+                  .AddTo(this.gameObject);
+    }
+
     private void Attack()
     {
+        attackTime += Time.deltaTime;
 
+        if (attackTime > zombie.AttackSpeed)
+        {
+            // 城への攻撃処理
+            CastleMgr.HpDecrease(zombie.Attack);
+
+            attackTime = 0;
+        }
     }
 }
