@@ -169,13 +169,27 @@ public class Mapeditor : MonoBehaviour
         gameObject.GetComponent<Collider2D>().OverlapCollider(new ContactFilter2D(), col2d);
         foreach (var c in col2d)
         {
-            if (c != null && c.name == "map")
+            if (c != null && Namecheack(c.name))
             {
                 Debug.Log(c.name + "オブジェクトを削除しました");
                 Destroy(c.gameObject);
                 break;
             }
         }
+    }
+
+    /// <summary>
+    /// 名前を確認します
+    /// </summary>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    private bool Namecheack(string s)
+    {
+        if(s == "map" || s == "nomap")
+        {
+            return true;
+        }
+        return false;
     }
 
     /// <summary>

@@ -15,6 +15,7 @@ public class TrapController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
+            if(MapManager.Instance.targetObj == null) { return; }
             TrapManager.Instance.hasTrap = true;
         }
         CreateTrap();

@@ -68,9 +68,14 @@ public class TrapManager : Singleton<TrapManager>
             }
             else
             {
-                Debug.Log("Map外が選択されました");
                 hasTrap = false;
                 MapManager.Instance.ChoiceTarget(obj);
+                if (hasTrapes[id] == 0)
+                {
+                    Debug.Log("指定したトラップを所持していません！");
+                    return;
+                }
+                Debug.Log("Map外が選択されました");
             }
         }
     }
