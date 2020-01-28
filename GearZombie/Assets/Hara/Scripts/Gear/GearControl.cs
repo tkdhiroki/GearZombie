@@ -3,29 +3,60 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class GearControl : MonoBehaviour
+public class GearControl : SingletonMonoBehaviour<GearControl>
 {
-    private GearView gearObject = null;
+    [SerializeField, Header("ギアInstanceオブジェクト")] private GameObject gearInstanceObject = null;
+
+    private GearMasterView master = null;
+    private TrapListView trap = null;
 
     private EventTrigger trigger = null;
     private bool gearFlag = false;
 
-    private void Awake()
-    {
-        if(gearObject == null) { gearObject = GetComponent<GearView>(); }
-        if(trigger == null) { trigger = GetComponent<EventTrigger>(); }
-    }
+    public bool WindowFlag { set; private get; } = true;
 
-    // Start is called before the first frame update
-    void Start()
+    protected override void Awake()
     {
-        SetEventTrigger();
+        base.Awake();
+        var gear = Instantiate(gearInstanceObject);
+        gear.SetActive(false);
+        master = gear.GetComponent<GearMasterView>();
+        trigger = master.GetGearView.Event;
+
+        EventTrigger.Entry pointerEnter = new EventTrigger.Entry();
+        pointerEnter.eventID = EventTriggerType.PointerEnter;
+        pointerEnter.callback.AddListener((x) => { gearFlag = true; });
+        trigger.triggers.Add(pointerEnter);
+
+        EventTrigger.Entry pointerExit = new EventTrigger.Entry();
+        pointerExit.eventID = EventTriggerType.PointerExit;
+        pointerExit.callback.AddListener((x) => { gearFlag = false; master.GetGearView.StopRotate(); });
+        trigger.triggers.Add(pointerExit);
+
+        if(FindObjectOfType<EventSystem>() == false)
+        {
+            gameObject.AddComponent<EventSystem>();
+            gameObject.AddComponent<StandaloneInputModule>();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         MouseClick();
+
+        if(Input.GetKeyDown(KeyCode.Space) && WindowFlag)
+        {
+            if(master.gameObject.activeSelf == false)
+            {
+                master.gameObject.SetActive(true);
+            }
+            else
+            {
+                master.gameObject.SetActive(false);
+                master.GetGearView.ResetGear();
+            }
+        }
     }
 
     /// <summary>
@@ -37,50 +68,40 @@ public class GearControl : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            if(gearObject.Coroutine == null)
+            if(master.GetGearView.Coroutine == null)
             {
-                gearObject.StartRotate(true);
+                master.GetGearView.StartRotate(true);
             }
         }
         if(Input.GetMouseButtonUp(0))
         {
-            if(gearObject.Coroutine != null)
+            if(master.GetGearView.Coroutine != null)
             {
-                gearObject.StopRotate();
+                master.GetGearView.StopRotate();
             }
         }
         if(Input.GetMouseButtonDown(1))
         {
-            if(gearObject.Coroutine == null)
+            if(master.GetGearView.Coroutine == null)
             {
-                gearObject.StartRotate(false);
+                master.GetGearView.StartRotate(false);
             }
         }
         if(Input.GetMouseButtonUp(1))
         {
-            if(gearObject.Coroutine != null)
+            if(master.GetGearView.Coroutine != null)
             {
-                gearObject.StopRotate();
+                master.GetGearView.StopRotate();
             }
         }
     }
 
     /// <summary>
-    /// イベントトリガーにイベントの設定
+    /// ギアの所持数を加算
     /// </summary>
-    private void SetEventTrigger()
+    /// <param name="itemID">対象のギア番号</param>
+    public void GearStockPlus(int itemID)
     {
-        if(trigger != null)
-        {
-            EventTrigger.Entry pointerEnter = new EventTrigger.Entry();
-            pointerEnter.eventID = EventTriggerType.PointerEnter;
-            pointerEnter.callback.AddListener((x) => { gearFlag = true; });
-            trigger.triggers.Add(pointerEnter);
-
-            EventTrigger.Entry pointerExit = new EventTrigger.Entry();
-            pointerExit.eventID = EventTriggerType.PointerExit;
-            pointerExit.callback.AddListener((x) => { gearFlag = false; gearObject.StopRotate(); });
-            trigger.triggers.Add(pointerExit);
-        }
+        master.GetGearView.GearStockPlus(itemID);
     }
 }

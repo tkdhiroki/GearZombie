@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TrapListControl : SingletonMonoBehaviour<TrapListControl>
+public class TrapListView : MonoBehaviour
 {
 
     [SerializeField, Header("トラップリスト")] private Image[] trapList = null;

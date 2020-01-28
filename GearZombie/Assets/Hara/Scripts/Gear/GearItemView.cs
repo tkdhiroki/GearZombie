@@ -29,12 +29,6 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         if(image == null) { image = GetComponent<Image>(); }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -51,6 +45,7 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         StartPos = transform.position;
         GearSprite = image.sprite;
         GearColor = image.color;
+        GearControl.instance.WindowFlag = false;
     }
 
     /// <summary>
@@ -70,6 +65,7 @@ public class GearItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         transform.position = StartPos;
         canvasGroup.blocksRaycasts = true;
+        GearControl.instance.WindowFlag = true;
     }
 
     /// <summary>

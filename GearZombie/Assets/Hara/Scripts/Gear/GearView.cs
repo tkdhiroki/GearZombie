@@ -17,6 +17,11 @@ public class GearView : MonoBehaviour, IDropHandler
     [SerializeField, Header("トラップ"), Tooltip("生成結果Image")] private Image trapImage = null;
     [SerializeField, Tooltip("トラップImageリスト")] private Sprite[] trapSprites = null;
 
+    [SerializeField, Header("イベントトリガー")] private EventTrigger eventTrigger;
+    public EventTrigger Event { get { return eventTrigger; } }
+
+    [SerializeField, Header("トラップリストスクリプト")] private TrapListView trap = null;
+
     private int[] setGearId = null;
 
     private int gearCount = 0;
@@ -121,7 +126,7 @@ public class GearView : MonoBehaviour, IDropHandler
     /// </summary>
     private void BreakGear()
     {
-        TrapListControl.instance.OutputTrap(trapImage.sprite, setGearId[0], trapLevel);
+        trap.OutputTrap(trapImage.sprite, setGearId[0], trapLevel);
         trapLevel = 0;
 
         for(int i = 1; i < gearObjects.Length; i++)
@@ -187,7 +192,7 @@ public class GearView : MonoBehaviour, IDropHandler
     /// <summary>
     /// セットしたギアをリセットする
     /// </summary>
-    private void ResetGear()
+    public void ResetGear()
     {
         if(gearCount <= 0) { return; }
         for(int i = 0; i < setGearId.Length; i++)
@@ -207,8 +212,19 @@ public class GearView : MonoBehaviour, IDropHandler
         // ギアを初期化
         gearCount = 0;
         gearObjects[0].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        createGauge.value = 0;
 
         trapImage.enabled = false;
         trapLevel = 0;
+    }
+
+    /// <summary>
+    /// ギアの所持数を加算
+    /// </summary>
+    /// <param name="itemID">対象のギア番号</param>
+    public void GearStockPlus(int itemID)
+    {
+        if(itemID < 0 || itemID >= gears.Length) { return; }
+        gears[itemID].Stock++;
     }
 }
