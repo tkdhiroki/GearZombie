@@ -58,7 +58,7 @@ public class TrapManager : Singleton<TrapManager>
         {
             //mapのポジションを取得
             obj = hit.collider.gameObject;
-            Debug.Log(obj == MapManager.Instance.targetObj);
+            Debug.Log(obj);
             if (hasTrapes[id] != 0 && obj == MapManager.Instance.targetObj)
             {
                 GameObject o = Instantiate(tList[id].trap.obj, obj.transform.position, Quaternion.identity);
@@ -69,13 +69,17 @@ public class TrapManager : Singleton<TrapManager>
             else
             {
                 hasTrap = false;
-                MapManager.Instance.ChoiceTarget(obj);
                 if (hasTrapes[id] == 0)
                 {
+                    if(obj != MapManager.Instance.targetObj) { goto nomap; }
                     Debug.Log("指定したトラップを所持していません！");
+                    MapManager.Instance.ChoiceTarget(obj);
                     return;
                 }
+
+                nomap:
                 Debug.Log("Map外が選択されました");
+                MapManager.Instance.ChoiceTarget(obj);
             }
         }
     }
