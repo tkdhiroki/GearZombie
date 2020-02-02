@@ -34,16 +34,16 @@ public class GearStockList : SingletonMonoBehaviour<GearStockList>
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            GetGearStockAdd();
+            GetGearStockAdd(Vector3.zero);
         }
-        //if (Input.GetKeyDown(KeyCode.N))
+        //if (Input.GetKeyDown(KeyCode.N))h
         //{
         //    GearGetAnimation(Vector3.zero);
         //}
     }
 
     // 在庫にplusする
-    public void GetGearStockAdd()
+    public void GetGearStockAdd(Vector3 pos)
     {
         int getGear = UnityEngine.Random.Range(0, randomSeed) * 10;
         if (getGear < gearLine - 1) return;
@@ -52,10 +52,10 @@ public class GearStockList : SingletonMonoBehaviour<GearStockList>
 
         int id = UnityEngine.Random.Range(0, GearItemList.Length * 10);
         id = Mathf.FloorToInt(id / 10f);
-        Debug.Log(id + "+" + GearItemList[id].Stock);
+        //Debug.Log(id + "+" + GearItemList[id].Stock);
         GearItemList[id].Stock = GearItemList[id].Stock + 1;
-        Debug.Log(GearItemList[id].Stock);
-        GearGetAnimation(Vector3.zero, GearItemList[id].GearColor);
+        //Debug.Log(GearItemList[id].Stock);
+        GearGetAnimation(pos, GearItemList[id].GearColor);
     }
 
     /// <summary>
