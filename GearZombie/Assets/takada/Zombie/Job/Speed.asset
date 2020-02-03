@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   job: 2
   sprite: {fileID: 21300014, guid: e6fc5dbf00ec28042bb42d353d13e000, type: 3}
-  hp: 10
+  hp: -139
   attack: 3
-  speed: 5
+  speed: 8
   attackSpeed: 1.5
   state: 0

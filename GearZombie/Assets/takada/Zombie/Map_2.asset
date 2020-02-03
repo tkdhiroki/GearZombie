@@ -17,9 +17,9 @@ MonoBehaviour:
     zombiePrefab: {fileID: 1402969162259532875, guid: e8113b4e598f92c43b135feda22841ed,
       type: 3}
     spawnNum: 6
-    spawnSpeed: 3
+    spawnSpeed: 4
   - zombieJob: 0
     zombiePrefab: {fileID: 1402969162259532875, guid: 463631d1652f3fb4eb1989de6ff84112,
       type: 3}
     spawnNum: 10
-    spawnSpeed: 2.5
+    spawnSpeed: 3

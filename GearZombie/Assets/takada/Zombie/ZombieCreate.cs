@@ -19,6 +19,16 @@ public class ZombieCreate : MonoBehaviour
     private float time = 0;
     private bool initTime = false;
 
+    private int zombieCount = 0;
+
+    public void FieldsZombieCount()
+    {
+        zombieCount--;
+        if(zombieCount <= 0)
+        {
+            CastleMgr.GameClear();
+        }
+    }
     private void Awake()
     {
         zombieSpawn = mapSetting.spawnClasses;
@@ -59,7 +69,7 @@ public class ZombieCreate : MonoBehaviour
             for (int spawn = 0; spawn < zombieSpawn[listNum].spawnNum; spawn++)
             {
                 var obj = Instantiate(zombieSpawn[listNum].zombiePrefab, zombieJobParent[listNum].transform);
-                obj.SetActive(false);
+                obj.SetActive(false); zombieCount++;
             }
 
         }

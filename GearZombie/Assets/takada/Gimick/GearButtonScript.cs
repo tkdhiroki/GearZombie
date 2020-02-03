@@ -13,33 +13,31 @@ public class GearButtonScript : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
     }
+
     public void OnClick()
     {
         // true
         if (uiOpen)
         {
-            this.rectTransform.DORotate(new Vector3(0, 0, 90), 1.0f);
-            CreateGearUI(uiOpen);
+            this.rectTransform.DORotate(new Vector3(0, 0, 0), 0.5f)
+                              .OnComplete(() => CreateGearUI(uiOpen));
+            Time.timeScale = 1.0f;
             uiOpen = !uiOpen;   // true -> false
         }
         else    // false
         {
-            this.rectTransform.DORotate(new Vector3(0, 0, 90), 1.0f);
-            CreateGearUI(uiOpen);
+
+            this.rectTransform.DORotate(new Vector3(0, 0, -120), 0.1f)
+                              .OnComplete( () => CreateGearUI(uiOpen));
+
+            Time.timeScale = 0.2f;
+
             uiOpen = !uiOpen;   // false -> true
         }
     }
 
     private void CreateGearUI(bool flag)
     {
-        if (flag)
-        {
-            createGear.transform.DOMoveX(1.0f, 0.5f);
-        }
-        else
-        {
-            createGear.transform.DOMoveX(0f, 0.5f);
-        }
-
+        createGear.SetActive(flag);
     }
 }

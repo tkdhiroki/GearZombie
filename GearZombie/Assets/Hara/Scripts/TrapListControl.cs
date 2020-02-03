@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TrapListControl : MonoBehaviour
 {
-
+    [SerializeField] private Sprite fireSprite = null;
     [SerializeField, Header("トラップリスト")] private Image[] trapList = null;
 
     private int trapIndex = 0;    // 生成数カウンター
@@ -19,6 +19,7 @@ public class TrapListControl : MonoBehaviour
         if(trapIndex >= trapList.Length) { return; }
         trapList[trapIndex].sprite = trapSprite;
         trapList[trapIndex].enabled = true;
+        //var script = trapList[trapIndex].GetComponent<GimmickButton>();
         string trapName;
         int baseTrapHp;
         switch(trapID)
@@ -34,6 +35,7 @@ public class TrapListControl : MonoBehaviour
             case 2:
                 trapName = "炎";
                 baseTrapHp = 10;
+                //script.ChangeGimmickType(GimmickType.Fire);
                 break;
             case 3:
                 trapName = "爆弾";
@@ -69,11 +71,18 @@ public class TrapListControl : MonoBehaviour
     void Start()
     {
         Init();
+        for(int i = 0; i< 3; i++)
+        {
+            trapList[trapIndex].sprite = fireSprite;
+            trapList[trapIndex].enabled = true;
+            trapIndex++;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UseTrap()
     {
-        
+        trapIndex--;
+        trapList[trapIndex].sprite = null;
+        trapList[trapIndex].enabled = false;
     }
 }

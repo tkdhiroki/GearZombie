@@ -14,6 +14,8 @@ public class CastleMgr : SingletonMonoBehaviour<CastleMgr>
     private float HpGauge;
     [SerializeField]
     private Text GameoverText;
+    [SerializeField]
+    private Text GameclearText;
     private float fadeSpeed = 2.5f;
 
     private float nowHp;
@@ -21,11 +23,15 @@ public class CastleMgr : SingletonMonoBehaviour<CastleMgr>
     {
         nowHp = HpGauge;
 
-        Color color = new Color();
+        Color color = GameoverText.color;
         color.a = 0;
+        Color color2 = GameclearText.color;
+        color2.a = 0;
 
         GameoverText.color = color;
+        GameclearText.color = color2;
     }
+
     public static void HpDecrease(float HpDec)
     {
         instance.nowHp -= HpDec;
@@ -39,6 +45,12 @@ public class CastleMgr : SingletonMonoBehaviour<CastleMgr>
 
     private static void GameOver()
     {
-        instance.GameoverText.DOFade(1.0f, instance.fadeSpeed);
+        instance.GameoverText.DOFade(1.0f, instance.fadeSpeed)
+                             .OnComplete( () => SceneLoadManager.LoadScene("Title") );        
+    }
+    public static void GameClear()
+    {
+        instance.GameclearText.DOFade(1.0f, instance.fadeSpeed)
+                             .OnComplete(() => SceneLoadManager.LoadScene("Title"));
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum GimmickType
 {
+    None,
     Fire,
     Bomb,
     Trap,
@@ -12,12 +13,20 @@ public enum GimmickType
 }
 public class GimmickButton : MonoBehaviour
 {
-    private GameObject parent;
-    [SerializeField] private GimmickType gimmickType;
+    //private GimmickType gimmickType;
+    [SerializeField] private GameObject fire = null;
+    private FireGimmick script = null;
+    //public void ChangeGimmickType(GimmickType type)
+    //{
+    //    gimmickType = type;
+    //}
+
     // Start is called before the first frame update
     void Start()
     {
-        parent = this.transform.parent.gameObject;
+        //parent = this.transform.parent.gameObject;
+        //gimmickType = GimmickType.None;
+        script = fire.GetComponent<FireGimmick>();
     }
 
     // Update is called once per frame
@@ -25,24 +34,11 @@ public class GimmickButton : MonoBehaviour
     {
         
     }
-    private void GetGimmickClass()
+    public void GetGimmickClass()
     {
-        switch(gimmickType)
-        {
-            case GimmickType.Fire:
-                var script = parent.GetComponent<FireGimmick>();
-                script.IsClick = true;
-                script.ColliderSwitch(true);
-                break;
-            case GimmickType.Bomb:
-                
-                break;
-            case GimmickType.Trap:
-                
-                break;
-            case GimmickType.Arrow:
-                
-                break;
-        }
+        if (script.IsClick) return;
+
+        script.IsClick = true;
+        script.ColliderSwitch(true);
     }
 }

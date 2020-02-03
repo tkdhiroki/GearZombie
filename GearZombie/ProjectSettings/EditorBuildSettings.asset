@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Shimojima/Scenes/MapTest.unity
     guid: 31f2cdf936c9f434ba8ba7ab6e1e7816
+  - enabled: 1
+    path: Assets/takada/battle.unity
+    guid: 58bcf96c7c122e74597eaa598076a123
   m_configObjects: {}

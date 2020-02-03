@@ -6,9 +6,12 @@ using DG.Tweening;
 
 public class FireGimmick : MonoBehaviour
 {
+    [SerializeField] private TrapListControl trapListControl = null;
+
     private readonly float remainFireTime = 3.5f;
     
     private Vector3 attackPosition = Vector3.zero;
+    private Vector3 position = Vector3.zero;
     private bool isClick = false;
     public bool IsClick {get { return isClick; } set { isClick = value; }}
     //---------------
@@ -17,15 +20,18 @@ public class FireGimmick : MonoBehaviour
     private float time = 0;
     [SerializeField, Header("炎の画像たち")] private List<SpriteRenderer> fireSprites  = new List<SpriteRenderer>();
     //----------------------
-    [SerializeField, Header("ギミック発動の説明UI")] private GameObject detailUI = null;
+   // [SerializeField, Header("ギミック発動の説明UI")] private GameObject detailUI = null;
 
     private void Start() {
         ColliderSwitch(false);
     }
     private Vector3 MousePointUpdate()
     {
-        float x = Mathf.Clamp( Input.mousePosition.x, 0, Screen.width);
-        attackPosition = new Vector3(x, 0, 0);     
+        position = Input.mousePosition;
+        position.z = 10f;
+        attackPosition = Camera.main.ScreenToWorldPoint(position);
+        attackPosition.x = Mathf.Clamp(attackPosition.x, -5f, 8f);
+        attackPosition.y = 0f;
         return attackPosition;   
     }
     private void Update() {
@@ -35,7 +41,7 @@ public class FireGimmick : MonoBehaviour
         // 右クリックでreset
         if(Input.GetMouseButtonDown(1)) 
         {
-            isClick = false; MainScript.instance.IsOPenFlagChange(true);
+            isClick = false; //MainScript.instance.IsOPenFlagChange(true);
             ColliderSwitch(false);
         }
         // クリックで発動
@@ -48,18 +54,20 @@ public class FireGimmick : MonoBehaviour
     public void ColliderSwitch(bool flag)
     {
         this.GetComponent<Collider2D>().enabled = flag;
-         detailUI.SetActive(flag);
+        this.gameObject.SetActive(flag);
+         //detailUI.SetActive(flag);
     }
 
     private void FireDamage()
     {
+        Debug.Log("Fire");
         FireFadeIn();
         damagesZombies.ForEach( x => x.GetComponent<ZombieScript>().Damaged(10));
         fireFlag = true; time = 0;
         
         StartCoroutine(FireTerrain());
 
-        isClick = false; MainScript.instance.IsOPenFlagChange(true);
+        isClick = false; //MainScript.instance.IsOPenFlagChange(true);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -90,7 +98,8 @@ public class FireGimmick : MonoBehaviour
     }
     private void FireFadeOut()
     {
-        fireSprites.ForEach( x => x.DOFade(0f, 0.5f));    
-        ColliderSwitch(false);
+        fireSprites.ForEach(x => x.DOFade(0f, 0.5f).OnComplete(() => ColliderSwitch(false)));
+        trapListControl.UseTrap();
+        //ColliderSwitch(false);
     }
 }
