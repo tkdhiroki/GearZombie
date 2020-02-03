@@ -21,41 +21,11 @@ public class ZombieGenerateGame : MonoBehaviour
         {
             fieldZombie.Add(obj.gameObject);
         }
-        //Observable.EveryUpdate()
-        //              .Subscribe(_ => ZombieInit())
-        //              .AddTo(this.gameObject);
     }
 
     void Update()
     {
         ZombieInit();
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    private void SpawnZombie()
-    {
-        if (fieldZombie.FirstOrDefault(x => x.activeSelf == false) == null) return;
-
-        //time += Time.deltaTime;
-        for (int pop = 0; pop < zombieNum; pop++)
-        {
-            Observable.EveryUpdate()
-                      .Subscribe(_ => ZombieInit())
-                      .AddTo(this.gameObject);
-            //if (time > zombieSpawn[pop].spawnSpeed)
-            //{
-            //    //if (!fieldZombie.Contains(zombieSpawn[pop].zombiePrefab)) return;
-            //    // zombie genelate
-            //    var zombie = fieldZombie.Where
-            //                            (x => x.GetComponent<ZombieJobParent>().zombieJob == zombieSpawn[pop].zombieJob)
-            //                            .FirstOrDefault(x => x.activeSelf == false);
-
-            //    zombie.SetActive(true);
-            //    time = 0;
-            //}
-        }
     }
 
     private void ZombieInit()

@@ -14,7 +14,6 @@ public class GimmickButton : MonoBehaviour
 {
     private GameObject parent;
     [SerializeField] private GimmickType gimmickType;
-
     // Start is called before the first frame update
     void Start()
     {

@@ -31,7 +31,7 @@ public class MainScript : SingletonMonoBehaviour<MainScript>
         else
         {
             isOpen = false;
-            Time.timeScale = 0.5f;
+            Time.timeScale = 0.2f;
         }
     }
 }

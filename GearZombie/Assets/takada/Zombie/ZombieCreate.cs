@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx.Async;
 
 public class ZombieCreate : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class ZombieCreate : MonoBehaviour
 
     private void FieldZombieInit()
     {
-        Debug.Log(zombieSpawn.Count);
+        //Debug.Log(zombieSpawn.Count);
         // count check
         if (zombieSpawn.Count < 1) return;
 
@@ -43,7 +44,7 @@ public class ZombieCreate : MonoBehaviour
         // １マップ分のエネミー生成
         for (int listNum = 0; listNum < zombieSpawn.Count; listNum++)
         {
-            Debug.Log(listNum);
+            //Debug.Log(listNum);
             var parent = Instantiate(obj, zombieBox);
             parent.name = zombieSpawn[listNum].zombiePrefab.name;
 
@@ -63,6 +64,4 @@ public class ZombieCreate : MonoBehaviour
 
         }
     }
-
-
 }

@@ -15,7 +15,9 @@ public class FireGimmick : MonoBehaviour
     private List<GameObject> damagesZombies = new List<GameObject>();
     private bool fireFlag = false;
     private float time = 0;
-    [SerializeField] private List<SpriteRenderer> fireSprites  = new List<SpriteRenderer>();
+    [SerializeField, Header("炎の画像たち")] private List<SpriteRenderer> fireSprites  = new List<SpriteRenderer>();
+    //----------------------
+    [SerializeField, Header("ギミック発動の説明UI")] private GameObject detailUI = null;
 
     private void Start() {
         ColliderSwitch(false);
@@ -30,12 +32,13 @@ public class FireGimmick : MonoBehaviour
         if(!isClick) return;
 
         this.transform.position = MousePointUpdate();
-
+        // 右クリックでreset
         if(Input.GetMouseButtonDown(1)) 
         {
             isClick = false; MainScript.instance.IsOPenFlagChange(true);
             ColliderSwitch(false);
         }
+        // クリックで発動
         if(Input.GetMouseButtonDown(0))
         {
             FireDamage();
@@ -45,6 +48,7 @@ public class FireGimmick : MonoBehaviour
     public void ColliderSwitch(bool flag)
     {
         this.GetComponent<Collider2D>().enabled = flag;
+         detailUI.SetActive(flag);
     }
 
     private void FireDamage()
@@ -61,7 +65,7 @@ public class FireGimmick : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         if(fireFlag)
         {
-            other.gameObject.GetComponent<ZombieScript>().Damaged(10);
+            other.gameObject.GetComponent<ZombieScript>().Damaged(2);
             return;
         }
         if(!damagesZombies.Contains(other.gameObject)) damagesZombies.Add(other.gameObject);

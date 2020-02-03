@@ -17,6 +17,8 @@ public class GearStockList : SingletonMonoBehaviour<GearStockList>
     // animation
     private float alphaTime = 0.8f;
 
+    [SerializeField] private int frameID = 2;
+
     private void Start()
     {
         parent = new GameObject("plusParent");
@@ -30,18 +32,6 @@ public class GearStockList : SingletonMonoBehaviour<GearStockList>
         }
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            GetGearStockAdd(Vector3.zero);
-        }
-        //if (Input.GetKeyDown(KeyCode.N))h
-        //{
-        //    GearGetAnimation(Vector3.zero);
-        //}
-    }
-
     // 在庫にplusする
     public void GetGearStockAdd(Vector3 pos)
     {
@@ -50,12 +40,13 @@ public class GearStockList : SingletonMonoBehaviour<GearStockList>
 
         //Debug.Log("GET!1");
 
-        int id = UnityEngine.Random.Range(0, GearItemList.Length * 10);
-        id = Mathf.FloorToInt(id / 10f);
-        //Debug.Log(id + "+" + GearItemList[id].Stock);
-        GearItemList[id].Stock = GearItemList[id].Stock + 1;
-        //Debug.Log(GearItemList[id].Stock);
-        GearGetAnimation(pos, GearItemList[id].GearColor);
+        // int id = UnityEngine.Random.Range(0, GearItemList.Length * 10);
+        // id = Mathf.FloorToInt(id / 10f);
+        //GearItemList[id].Stock = GearItemList[id].Stock + 1;
+        // idを火に固定
+        GearItemList[frameID].Stock = GearItemList[frameID].Stock++;
+        
+        GearGetAnimation(pos, GearItemList[frameID].GearColor);
     }
 
     /// <summary>

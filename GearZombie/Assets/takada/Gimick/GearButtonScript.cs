@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-
+/* Gimmick生成 画面 出現 */
 public class GearButtonScript : MonoBehaviour
 {
     private bool uiOpen = false;
     private RectTransform rectTransform;
-    [SerializeField] private GameObject createGear = null;
-    private void Start() {
+    [SerializeField, Header("Create Gear UI")] private GameObject createGear = null;
+    private void Start()
+    {
         rectTransform = GetComponent<RectTransform>();
     }
     public void OnClick()
     {
         // true
-        if(uiOpen)
+        if (uiOpen)
         {
-            this.rectTransform.DORotate(new Vector3(0,0,90), 1.0f);
+            this.rectTransform.DORotate(new Vector3(0, 0, 90), 1.0f);
             CreateGearUI(uiOpen);
             uiOpen = !uiOpen;   // true -> false
         }
@@ -31,7 +32,7 @@ public class GearButtonScript : MonoBehaviour
 
     private void CreateGearUI(bool flag)
     {
-        if(flag)
+        if (flag)
         {
             createGear.transform.DOMoveX(1.0f, 0.5f);
         }
@@ -39,6 +40,6 @@ public class GearButtonScript : MonoBehaviour
         {
             createGear.transform.DOMoveX(0f, 0.5f);
         }
-        
+
     }
 }

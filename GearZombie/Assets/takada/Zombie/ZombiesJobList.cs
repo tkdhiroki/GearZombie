@@ -33,18 +33,3 @@ public class ZombiesJobList : ScriptableObject
     [SerializeField] ZombieState state;
     public ZombieState State { get { return state; } set { state = value; } }
 }
-
-//[System.Serializable]
-//public struct ZombieParam
-//{
-//    [SerializeField] ZombieJob job;
-//    public ZombieJob Job { get { return job;}}
-//    [SerializeField] Sprite sprite;
-//    [SerializeField] int hp, attack, deffence, speed;
-//    public int Hp { get { return hp;}}
-//    public int Attack { get { return attack;}}
-//    public int Deffence { get { return deffence;}}
-//    public int Speed { get { return speed;}}
-//    [SerializeField] float attackSpeed;
-//    public float AttackSpeed { get { return attackSpeed;}}
-//}
