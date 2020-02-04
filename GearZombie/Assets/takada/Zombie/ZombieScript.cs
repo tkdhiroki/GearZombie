@@ -49,6 +49,8 @@ public class ZombieScript : MonoBehaviour
     {
         switch(currentState)
         {
+            case ZombieState.None:
+                break;
             case ZombieState.Move:
                 Moving();
                 AttackCheck();
@@ -56,8 +58,9 @@ public class ZombieScript : MonoBehaviour
             case ZombieState.Attack:
                 Attack();
                 break;
-            //case ZombieState.Stop:
-            //    break;
+            case ZombieState.Death:
+                DeathZombie();
+                break;
         }
     }
 
@@ -72,7 +75,7 @@ public class ZombieScript : MonoBehaviour
         zombie.Hp = hp;
         if(zombie.Hp <= 0)
         {
-            DeathZombie();
+            currentState = ZombieState.Death;
         }
     }
 
@@ -119,7 +122,9 @@ public class ZombieScript : MonoBehaviour
 
     private void DeathZombie()
     {
+        currentState = ZombieState.None;
         this.gameObject.SetActive(false);
+        parent.transform.GetChild(1).gameObject.SetActive(false);
         //Destroy(parent);
         rootObj.GetComponent<ZombieCreate>().FieldsZombieCount();
     }

@@ -19,11 +19,13 @@ public class FireGimmick : MonoBehaviour
     private bool fireFlag = false;
     private float time = 0;
     [SerializeField, Header("炎の画像たち")] private List<SpriteRenderer> fireSprites  = new List<SpriteRenderer>();
+    private SpriteRenderer spriteRenderer;
     //----------------------
    // [SerializeField, Header("ギミック発動の説明UI")] private GameObject detailUI = null;
 
     private void Start() {
         ColliderSwitch(false);
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     private Vector3 MousePointUpdate()
     {
@@ -31,7 +33,7 @@ public class FireGimmick : MonoBehaviour
         position.z = 10f;
         attackPosition = Camera.main.ScreenToWorldPoint(position);
         attackPosition.x = Mathf.Clamp(attackPosition.x, -5f, 8f);
-        attackPosition.y = 0f;
+        attackPosition.y = 0;
         return attackPosition;   
     }
     private void Update() {
@@ -63,7 +65,7 @@ public class FireGimmick : MonoBehaviour
         Debug.Log("Fire");
         FireFadeIn();
         damagesZombies.ForEach( x => x.GetComponent<ZombieScript>().Damaged(10));
-        fireFlag = true; time = 0;
+        fireFlag = true; time = 0; spriteRenderer.enabled = false;
         
         StartCoroutine(FireTerrain());
 
@@ -98,8 +100,8 @@ public class FireGimmick : MonoBehaviour
     }
     private void FireFadeOut()
     {
-        fireSprites.ForEach(x => x.DOFade(0f, 0.5f).OnComplete(() => ColliderSwitch(false)));
-        trapListControl.UseTrap();
+        fireSprites.ForEach(x => x.DOFade(0f, 0.5f).OnComplete(() => { ColliderSwitch(false); spriteRenderer.enabled = true; }));
+        trapListControl.UseTrap(); 
         //ColliderSwitch(false);
     }
 }

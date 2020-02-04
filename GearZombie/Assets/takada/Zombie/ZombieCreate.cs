@@ -24,6 +24,7 @@ public class ZombieCreate : MonoBehaviour
     public void FieldsZombieCount()
     {
         zombieCount--;
+        Debug.Log(zombieCount);
         if(zombieCount <= 0)
         {
             CastleMgr.GameClear();
@@ -34,7 +35,7 @@ public class ZombieCreate : MonoBehaviour
         zombieSpawn = mapSetting.spawnClasses;
         
         // create zombie ( active => false )
-        FieldZombieInit();
+        //FieldZombieInit();
     }
 
     //private void Update()
@@ -44,7 +45,7 @@ public class ZombieCreate : MonoBehaviour
     //    SpawnZombie();
     //}
 
-    private void FieldZombieInit()
+    public void FieldZombieInit()
     {
         //Debug.Log(zombieSpawn.Count);
         // count check
@@ -73,5 +74,6 @@ public class ZombieCreate : MonoBehaviour
             }
 
         }
+        Debug.Log(zombieCount);
     }
 }
